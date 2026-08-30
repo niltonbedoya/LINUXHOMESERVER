@@ -1,0 +1,13 @@
+---
+- glances:
+    url: http://glances:61208
+    version: 4
+    label: Mac mini
+    cpu: true
+    mem: true
+    cputemp: true
+    cpuSensorLabel: Package id
+    unit: metric
+    uptime: true
+    disk: /hostfs
+    expanded: true

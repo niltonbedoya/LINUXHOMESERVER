@@ -1,0 +1,198 @@
+---
+- 🏠 HOME SERVER:
+    - n8n:
+        icon: n8n.png
+        href: https://macmini-server.tailf553c4.ts.net:8443/
+        description: Automatización y workflows
+        server: local-docker
+        container: n8n
+        showStats: true
+
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: http://100.72.206.57:3001/
+        description: Monitorización y alertas
+        server: local-docker
+        container: uptime-kuma
+        showStats: true
+
+    - OpenClaw:
+        icon: mdi-robot-outline
+        href: https://macmini-server.tailf553c4.ts.net/
+        description: Agentes y automatización
+
+    - Tailscale:
+        icon: tailscale.png
+        href: https://login.tailscale.com/admin/machines
+        description: Administración de la tailnet
+
+- 🚨 PRODUCCIÓN:
+    - Servidor Ubuntu PROD:
+        icon: mdi-server-#ef4444
+        description: Nodo real · acceso privado por Tailscale
+        ping: servicio-tickets-definitivo.tailf553c4.ts.net
+
+    - Tickets PROD:
+        icon: mdi-ticket-confirmation-outline-#ef4444
+        href: https://service-ab-electronic.com/
+        description: Sistema de tickets · entorno real
+        siteMonitor: https://service-ab-electronic.com/
+
+- 🧪 DESARROLLO / DEV:
+    - Servidor Ubuntu DEV:
+        icon: mdi-server-#3b82f6
+        description: Máquina virtual · pruebas por Tailscale
+        ping: tickets-server-dev.tailf553c4.ts.net
+
+    - Tickets DEV:
+        icon: mdi-ticket-confirmation-outline-#3b82f6
+        href: http://tickets-server-dev.tailf553c4.ts.net:5173/
+        description: Frontend de pruebas · no producción
+        siteMonitor: http://tickets-server-dev.tailf553c4.ts.net:5173/
+
+    - API DEV:
+        icon: mdi-api-#3b82f6
+        href: http://tickets-server-dev.tailf553c4.ts.net:18000/docs
+        description: Swagger y API de pruebas
+        siteMonitor: http://tickets-server-dev.tailf553c4.ts.net:18000/health
+
+- 🧠 LLM Y CHAT IA:
+    - ChatGPT:
+        icon: si-openai
+        href: https://chatgpt.com/
+        description: Cuenta existente · OpenAI
+
+    - Gemini:
+        icon: si-googlegemini
+        href: https://gemini.google.com/
+        description: Cuenta existente · Google
+
+    - Claude:
+        icon: si-anthropic
+        href: https://claude.ai/
+        description: Plan gratuito limitado · Anthropic
+
+    - Perplexity:
+        icon: si-perplexity
+        href: https://www.perplexity.ai/
+        description: Plan Standard gratuito
+
+    - Grok:
+        icon: mdi-creation-outline
+        href: https://grok.com/
+        description: Plan gratuito limitado · xAI
+
+    - Microsoft Copilot:
+        icon: si-microsoftcopilot
+        href: https://copilot.microsoft.com/
+        description: Asistente web gratuito
+
+    - Mistral Vibe:
+        icon: si-mistralai
+        href: https://chat.mistral.ai/
+        description: Antes Le Chat · plan gratuito
+
+- 🧑‍💻 IDE Y EDITORES:
+    - Visual Studio Code:
+        icon: si-visualstudiocode
+        href: homeserver-launch://vscode
+        description: Abre la app instalada o la descarga oficial
+
+    - Cursor:
+        icon: mdi-cursor-default-click-outline-#ffffff
+        href: homeserver-launch://cursor
+        description: Hobby gratuito · app instalada
+
+    - Antigravity:
+        icon: mdi-rocket-launch-outline-#4285f4
+        href: homeserver-launch://antigravity
+        description: Entorno agéntico instalado
+
+    - Zed:
+        icon: mdi-code-braces-#a855f7
+        href: homeserver-launch://zed
+        description: Editor Personal gratuito
+
+    - Visual Studio Community:
+        icon: si-visualstudio
+        href: homeserver-launch://visual-studio
+        description: IDE gratuito para uso individual
+
+    - JetBrains IDEs:
+        icon: si-jetbrains
+        href: homeserver-launch://jetbrains
+        description: Toolbox y opciones gratuitas aplicables
+
+- 🤖 AGENTES Y CLI:
+    - Hermes Desktop:
+        icon: mdi-robot-outline-#f59e0b
+        href: homeserver-launch://hermes
+        description: Hermes Agent · app instalada
+
+    - Codex CLI:
+        icon: mdi-code-braces-#10a37f
+        href: homeserver-launch://codex
+        description: Usa tu cuenta ChatGPT · CLI o documentación
+
+    - OpenCode:
+        icon: mdi-console-line-#22c55e
+        href: homeserver-launch://opencode
+        description: Agente CLI de código abierto
+
+    - Aider:
+        icon: mdi-console-#ef4444
+        href: homeserver-launch://aider
+        description: Asistente CLI de código abierto
+
+    - GitHub Copilot:
+        icon: si-githubcopilot
+        href: https://github.com/copilot
+        description: Cuenta existente · asistente de código
+
+- ⌨️ TERMINALES Y SHELLS:
+    - Warp:
+        icon: si-warp
+        href: homeserver-launch://warp
+        description: Plan gratuito · app instalada
+
+    - PowerShell:
+        icon: si-powershell
+        href: homeserver-launch://powershell
+        description: Shell instalado en Windows
+
+    - Windows Terminal:
+        icon: si-windowsterminal
+        href: homeserver-launch://windows-terminal
+        description: Abre la app o su instalación oficial
+
+    - WSL:
+        icon: si-linux
+        href: homeserver-launch://wsl
+        description: Linux para Windows · app o guía oficial
+
+- 🧪 PLATAFORMAS IA:
+    - Google AI Studio:
+        icon: si-google
+        href: https://aistudio.google.com/
+        description: Prototipos y modelos de Google
+
+    - NVIDIA Build:
+        icon: si-nvidia
+        href: https://build.nvidia.com/
+        description: Catálogo y pruebas de modelos NVIDIA
+
+- 🛠 ADMINISTRACIÓN:
+    - Tailscale Admin:
+        icon: tailscale.png
+        href: https://login.tailscale.com/admin/machines
+        description: Equipos y configuración de la tailnet
+
+    - Uptime Kuma Admin:
+        icon: uptime-kuma.png
+        href: http://100.72.206.57:3001/
+        description: Monitores, histórico y alertas
+
+    - GitHub:
+        icon: si-github
+        href: https://github.com/
+        description: Repositorios y administración
