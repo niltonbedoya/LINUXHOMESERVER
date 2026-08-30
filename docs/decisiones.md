@@ -28,9 +28,21 @@
 | Homepage DEV | Probar bundle y CORS, no solo healthchecks | Un backend sano no detecta una API compilada con loopback ni un origen rechazado |
 | Homepage IA | Usar únicamente enlaces oficiales sin widgets ni claves | Centraliza accesos sin ampliar permisos ni duplicar integraciones |
 | Homepage IA | Usar `antigravity.google.com` como URL canónica | La página declara ese dominio como canónico |
+| Homepage herramientas | Separar LLM, IDE, agentes/CLI, terminales y plataformas | Evita mezclar aplicaciones locales, interfaces web y shells |
+| Homepage Windows | Usar `homeserver-launch://` con allowlist y registro HKCU | Permite app local con fallback web sin administrador ni ejecución arbitraria |
+| Homepage herramientas | Omitir Gemini CLI y Claude Code de la lista gratuita | Gemini CLI dejó las cuentas individuales y Claude Code requiere un plan de pago |
+| Homepage terminales | Retirar Windows Terminal | Duplicaba el acceso ya cubierto por PowerShell |
+| Homepage OpenCode | Usar una Tab Config fija de Warp con Bash y `opencode.cmd` | El TUI necesita terminal; evita ejecutar el shim como proceso suelto o aceptar comandos web |
 | Homepage Admin | Duplicar accesos de Kuma/Tailscale sin mover HOME | Conserva la base aprobada y crea un bloque administrativo predecible |
 | Homepage | Usar v2.1.2 y evitar `latest` | Hace el despliegue reproducible |
 | Homepage | Usar socket-proxy y Glances en fases separadas | Limita privilegios y evita confundir métricas del contenedor con el host |
+| Homepage métricas | Monitorizar PC, DEV, Raspberry Pi y PROD; excluir el teléfono | Aporta estado útil sin instalar un agente que consuma batería en Android |
+| Homepage métricas | Usar Glances por MagicDNS/Tailscale, autenticado y ligado solo a la IP Tailscale | Evita LAN/Internet y no expone una API de sistema sin protección |
+| Homepage métricas | Desplegar PC → DEV → Raspberry Pi → PROD | Valida primero Windows y Linux fuera de producción; PROD queda último por riesgo |
+| Homepage métricas | Mantener credenciales fuera de Git mediante variables locales | Homepage necesita consultar la API sin versionar contraseñas |
+| Homepage Nilton PC | Usar Glances 4.5.6 en venv propio, tarea SYSTEM y firewall Tailscale limitado al Mac mini | No altera Hermes/Python global y evita exposición por LAN o a otros nodos |
+| Homepage Nilton PC | Usar `metric: info`, `chart: false` y refresco de 5 s | Presenta CPU/RAM en una tarjeta compacta sin cargar procesos ni saturar la cabecera |
+| Homepage métricas | Tratar la Raspberry Pi actual y el futuro NAS como alcances distintos | Observar el equipo no adelanta almacenamiento, backups ni diseño del NAS |
 
 ## Cómo registrar nuevas decisiones
 

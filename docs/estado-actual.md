@@ -1,6 +1,6 @@
 # Estado actual
 
-Última revisión: 29 de agosto de 2026, zona `Europe/Madrid`.
+Última revisión: 30 de agosto de 2026, zona `Europe/Madrid`.
 
 Este documento separa lo observado directamente en el host de lo heredado del contexto
 histórico. Los valores dinámicos deben volver a comprobarse antes de tomar decisiones.
@@ -19,7 +19,7 @@ histórico. Los valores dinámicos deben volver a comprobarse antes de tomar dec
 | Bot Telegram | crontab `@reboot` ejecuta `telegram_bot_loop.sh` |
 | Comando `/servidor` | funcionamiento correcto confirmado por el usuario |
 | Docker para `bedvil` | acceso confirmado fuera del sandbox; usuario en grupo `docker` |
-| Homepage | v2.1.2 healthy; HTTPS privado activo en `https://macmini-server.tailf553c4.ts.net:10000/`; cinco grupos hasta IA/Admin configurados |
+| Homepage | v2.1.2 healthy; HTTPS privado activo en `https://macmini-server.tailf553c4.ts.net:10000/`; diez grupos configurados, incluido Nilton PC |
 
 El lanzador observado es:
 
@@ -90,5 +90,38 @@ con acceso apropiado.
   antiguo; ambos se corrigieron y las pruebas de bundle/preflight pasan. Homepage recargó
   la tarjeta canónica 18000 sin reinicios. El usuario confirmó después el funcionamiento
   real frontend→backend; G3 está cerrada.
-- La Fase 4 añadió siete enlaces de IA y tres administrativos sin claves ni widgets. Las
-  URLs, TLS y regresiones pasan; Homepage sigue healthy y G4 espera revisión visual.
+- La Fase 4 se amplió a grupos separados de LLM/chat, IDE, agentes/CLI, terminales,
+  plataformas IA y Administración. Homepage sigue healthy y todas las pruebas del
+  servidor pasan.
+- El protocolo local `homeserver-launch://` está instalado y validado en Windows
+  PowerShell 5.1. El catálogo final tiene 13 destinos; Windows Terminal se retiró por
+  duplicar PowerShell y OpenCode abre correctamente una Tab Config fija de Warp con Bash
+  y `opencode.cmd`. El usuario confirmó el resto de aplicaciones, fallbacks, iconos y
+  distribución; G4 y la Fase 4 quedan cerradas.
+- La Fase 5A verificó en Tailscale cuatro objetivos de métricas: `Nilton-PC`
+  (`100.105.88.14`), DEV (`100.80.93.74`), Raspberry Pi (`100.65.215.4`) y PROD
+  (`100.113.199.93`). Todos estaban online; la IP es solo evidencia y MagicDNS será el
+  identificador operativo.
+- Ninguno de esos cuatro equipos exponía Glances 61208 al contenedor Homepage. No se
+  instaló nada todavía. El teléfono queda excluido para evitar consumo de batería.
+- La Raspberry Pi actual existe y está online; esto no cambia que los discos, backups y
+  diseño del futuro NAS pertenezcan a otro proyecto.
+- Al iniciar 5B, Nilton PC respondió a `tailscale ping`, pero rechazó TCP 22. No se
+  habilitó SSH: se preparó un inventario PowerShell local y no se aplicaron cambios al PC.
+- El inventario 5B confirmó Windows 11 Pro, PowerShell 5.1, Tailscale `100.105.88.14`,
+  Glances ausente y 61208 libre. La sesión no estaba elevada. `py.exe` conserva una
+  entrada 3.13 rota; el Python privado de Hermes no se tocará y se validará por separado
+  la CPython 3.11.15 registrada por `uv` antes de instalar.
+- La CPython 3.11.15 de `uv` quedó validada y el bundle 5B usa Glances 4.5.6,
+  autenticación, listener/firewall Tailscale, tarea de inicio, pruebas y rollback.
+- El agente 5B está instalado y sus pruebas locales pasan: CPU, RAM, disco, uptime,
+  allowlist y privacidad. Escucha solo en `100.105.88.14:61208`; el firewall acepta
+  únicamente al Mac mini `100.72.206.57`.
+- El secreto se transfirió por stdin de SSH y quedó en `services/homepage/.env`, modo
+  600, ignorado por Git. La inspección comprobó solo estructura y permisos, no valores.
+- Homepage se recreó de forma exclusiva, quedó healthy y sin reinicios. La tarjeta
+  compacta Nilton PC usa MagicDNS, autenticación y muestra CPU/RAM; la prueba remota
+  validó también disco, uptime, rechazo anónimo y ausencia de plugins de procesos.
+- La regresión completa posterior pasó para Homepage, n8n, Kuma, OpenClaw, PROD, DEV y
+  Tailscale. Quedan la confirmación visual del usuario y la prueba manual de caída
+  aislada antes de cerrar formalmente G5B.

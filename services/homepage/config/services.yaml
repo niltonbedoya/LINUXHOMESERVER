@@ -26,6 +26,21 @@
         href: https://login.tailscale.com/admin/machines
         description: Administración de la tailnet
 
+- 🖥 EQUIPOS:
+    - Nilton PC:
+        icon: mdi-laptop-#22c55e
+        description: Windows 11 · métricas privadas por Tailscale
+        ping: nilton-pc.tailf553c4.ts.net
+        widget:
+          type: glances
+          url: http://nilton-pc.tailf553c4.ts.net:61208
+          username: "{{HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD}}"
+          version: 4
+          metric: info
+          chart: false
+          refreshInterval: 5000
+
 - 🚨 PRODUCCIÓN:
     - Servidor Ubuntu PROD:
         icon: mdi-server-#ef4444
@@ -159,11 +174,6 @@
         icon: si-powershell
         href: homeserver-launch://powershell
         description: Shell instalado en Windows
-
-    - Windows Terminal:
-        icon: si-windowsterminal
-        href: homeserver-launch://windows-terminal
-        description: Abre la app o su instalación oficial
 
     - WSL:
         icon: si-linux

@@ -2,8 +2,8 @@
 
 ## Alta prioridad
 
-- Confirmar visualmente los bloques IA y Administración, sus iconos y los diez enlaces
-  antes de iniciar la Fase 5.
+- Cerrar G5B: confirmar visualmente la tarjeta Nilton PC y ejecutar la prueba controlada
+  de caída/recuperación del agente, comprobando que Homepage permanece healthy.
 - Probar desde otro dispositivo conectado a Tailscale el inicio de sesión, el editor de
   n8n y un workflow que reciba un webhook mediante la nueva URL HTTPS.
 
@@ -17,7 +17,8 @@
 
 ## Media prioridad
 
-- Probar opcionalmente Homepage desde Android y añadirlo a la pantalla de inicio.
+- Tras cerrar G5B, continuar métricas por puertas independientes: DEV, Raspberry Pi, PROD y
+  finalmente integración/diseño. PROD debe ser el último equipo modificado.
 - Volver a probar los modelos NVIDIA desde n8n ahora que HOST y WEBHOOK están corregidos.
 - Revisar con calma los avisos de deprecación mostrados por n8n 2.36.8 sobre paquetes no
   verificados, timeout de runners y límites de descompresión. No fijar valores sin decidir

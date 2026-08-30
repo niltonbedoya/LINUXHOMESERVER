@@ -81,31 +81,59 @@ if disk_delta > 0.02:
 if not payload["uptime"]:
     fail("Glances no devuelve uptime")
 
-host_temperature = None
-try:
-    sensors_output = command("sensors")
-    match = re.search(r"^Package id 0:\s*\+?(-?\d+(?:\.\d+)?)", sensors_output, re.MULTILINE)
-    if match:
-        host_temperature = float(match.group(1))
-except (FileNotFoundError, subprocess.CalledProcessError):
-    pass
-
-glances_temperature = None
-for sensor in payload["sensors"]:
-    label = str(sensor.get("label", ""))
-    if label.startswith("Package id"):
-        glances_temperature = float(sensor["value"])
-        break
-
-if host_temperature is None:
-    fail("sensors no devuelve Package id 0 en el host")
-if glances_temperature is None:
-    fail("Glances no devuelve un sensor Package id")
-if abs(host_temperature - glances_temperature) > 5:
-    fail(
-        f"Temperatura de Glances ({glances_temperature}) no coincide con el host "
-        f"({host_temperature})"
+def host_package_temperature():
+    try:
+        sensors_output = command("sensors")
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return None
+    match = re.search(
+        r"^Package id 0:\s*\+?(-?\d+(?:\.\d+)?)",
+        sensors_output,
+        re.MULTILINE,
     )
+    return float(match.group(1)) if match else None
+
+
+def package_temperature(sensors_payload):
+    for sensor in sensors_payload:
+        if str(sensor.get("label", "")).startswith("Package id"):
+            return float(sensor["value"])
+    return None
+
+
+sensor_fetch_script = r"""
+fetch('http://glances:61208/api/4/sensors')
+  .then(response => {
+    if (!response.ok) throw new Error(`sensors: HTTP ${response.status}`);
+    return response.json();
+  })
+  .then(value => console.log(JSON.stringify(value)));
+"""
+
+temperature_samples = []
+glances_sensors = payload["sensors"]
+for attempt in range(6):
+    host_temperature = host_package_temperature()
+    glances_temperature = package_temperature(glances_sensors)
+    temperature_samples.append((glances_temperature, host_temperature))
+    if host_temperature is None:
+        fail("sensors no devuelve Package id 0 en el host")
+    if glances_temperature is None:
+        fail("Glances no devuelve un sensor Package id")
+    if abs(host_temperature - glances_temperature) <= 5:
+        break
+    if attempt < 5:
+        time.sleep(1)
+        glances_sensors = json.loads(
+            command("docker", "exec", "homepage", "node", "-e", sensor_fetch_script)
+        )
+else:
+    samples = ", ".join(
+        f"Glances={glances:.1f}/host={host:.1f}"
+        for glances, host in temperature_samples
+    )
+    fail(f"Temperatura fuera de tolerancia durante seis muestras: {samples}")
+
 print(f"Temperatura fiable: {glances_temperature:.1f} °C")
 
 print(f"CPU válida: {cpu_total:.1f} %")

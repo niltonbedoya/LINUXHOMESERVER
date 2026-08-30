@@ -9,6 +9,8 @@ services:
       - "127.0.0.1:3000:3000"
     environment:
       HOMEPAGE_ALLOWED_HOSTS: macmini-server.tailf553c4.ts.net:10000
+      HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME: ${HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME:?falta usuario Glances de Nilton PC}
+      HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD: ${HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD:?falta password Glances de Nilton PC}
       TZ: Europe/Madrid
     volumes:
       - ./config:/app/config

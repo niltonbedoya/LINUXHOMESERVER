@@ -12,6 +12,10 @@ layout:
     style: row
     columns: 4
 
+  🖥 EQUIPOS:
+    style: row
+    columns: 4
+
   🚨 PRODUCCIÓN:
     style: row
     columns: 2
@@ -34,7 +38,7 @@ layout:
 
   ⌨️ TERMINALES Y SHELLS:
     style: row
-    columns: 4
+    columns: 3
 
   🧪 PLATAFORMAS IA:
     style: row

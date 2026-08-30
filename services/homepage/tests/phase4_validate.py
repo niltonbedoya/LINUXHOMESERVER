@@ -20,6 +20,7 @@ if not isinstance(groups, list):
 by_name = {group.get("name"): group for group in groups}
 expected_groups = {
     "🏠 HOME SERVER",
+    "🖥 EQUIPOS",
     "🚨 PRODUCCIÓN",
     "🧪 DESARROLLO / DEV",
     "🧠 LLM Y CHAT IA",
@@ -60,7 +61,6 @@ expected_links = {
     "⌨️ TERMINALES Y SHELLS": {
         "Warp": "homeserver-launch://warp",
         "PowerShell": "homeserver-launch://powershell",
-        "Windows Terminal": "homeserver-launch://windows-terminal",
         "WSL": "homeserver-launch://wsl",
     },
     "🧪 PLATAFORMAS IA": {

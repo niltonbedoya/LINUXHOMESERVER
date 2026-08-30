@@ -77,8 +77,22 @@ El contexto histórico indica que el administrador inicial ya fue creado.
 - Estado Docker: proxy v0.5.0 en red interna, GET/HEAD de contenedores y `POST=0`.
 - Métricas: Glances 4.5.6 en otra red interna, sin puertos ni socket Docker.
 - Métricas verificadas: CPU, RAM, disco, uptime y temperatura CPU `Package id`.
-- Grupos: HOME SERVER, PRODUCCIÓN, DESARROLLO / DEV, INTELIGENCIA ARTIFICIAL y
-  ADMINISTRACIÓN.
+- Grupos: HOME SERVER, EQUIPOS, PRODUCCIÓN, DESARROLLO / DEV, LLM Y CHAT IA, IDE Y
+  EDITORES, AGENTES Y CLI, TERMINALES Y SHELLS, PLATAFORMAS IA y ADMINISTRACIÓN.
+
+### Métricas remotas previstas
+
+La Fase 5A diseña agentes Glances independientes en Nilton PC, DEV, Raspberry Pi y PROD.
+Nilton PC es el primer nodo desplegado: Glances 4.5.6 se ejecuta en un venv propio,
+escucha únicamente en su IP Tailscale `100.105.88.14:61208`, autentica las métricas y
+limita el firewall al Mac mini. Su allowlist excluye procesos y programas. Homepage lo
+consulta por MagicDNS y recibe las credenciales desde un `.env` local ignorado por Git.
+
+DEV, Raspberry Pi y PROD siguen pendientes en ese orden. El patrón Linux se validará
+fuera de producción antes de modificar PROD.
+
+El teléfono no forma parte del sistema de métricas. La Raspberry Pi se observará como
+equipo actual, sin anticipar los discos ni las responsabilidades del futuro NAS.
 
 ## Tailscale Serve
 
@@ -112,9 +126,18 @@ no se habilitó exposición pública.
 
 ## Automatización e IA
 
-Homepage funciona como launchpad de enlaces para ChatGPT, Codex, Antigravity, GitHub
-Copilot, Google AI Studio, Gemini y NVIDIA Build. No ejecuta modelos ni almacena claves;
-la autenticación ocurre en cada proveedor.
+Homepage funciona como launchpad de enlaces web y aplicaciones del cliente. Los LLM y
+plataformas no almacenan claves; la autenticación ocurre en cada proveedor.
+
+En Windows, `homeserver-launch://<id>` se resuelve mediante un manejador instalado solo
+para el usuario actual. El manejador acepta una lista cerrada, busca AppID o comandos
+conocidos y abre una URL HTTPS oficial cuando la herramienta no está instalada. No
+acepta rutas, consultas, fragmentos, argumentos ni comandos arbitrarios. Homepage no
+puede detectar ni ejecutar por sí mismo aplicaciones de un equipo cliente.
+
+OpenCode es un caso explícito del catálogo: el instalador crea una Tab Config de Warp
+que usa Bash y ejecuta únicamente `opencode.cmd`. La tarjeta abre esa configuración por
+su URI fija; no construye órdenes a partir del enlace web.
 
 En n8n existe un workflow básico comprobado históricamente:
 

@@ -83,11 +83,12 @@
     "id": "opencode",
     "name": "OpenCode",
     "category": "cli",
-    "mode": "cli",
+    "mode": "warp-tab",
     "appIds": [],
-    "commands": ["opencode"],
+    "commands": ["opencode.cmd", "opencode"],
+    "tabConfig": "homepage_opencode",
     "fallbackUrl": "https://opencode.ai/docs/",
-    "expectedInstalled": false
+    "expectedInstalled": true
   },
   {
     "id": "aider",
@@ -118,16 +119,6 @@
     "commands": ["pwsh", "powershell"],
     "fallbackUrl": "https://learn.microsoft.com/powershell/",
     "expectedInstalled": true
-  },
-  {
-    "id": "windows-terminal",
-    "name": "Windows Terminal",
-    "category": "terminal",
-    "mode": "app",
-    "appIds": ["Microsoft.WindowsTerminal_8wekyb3d8bbwe!App"],
-    "commands": ["wt"],
-    "fallbackUrl": "https://aka.ms/terminal",
-    "expectedInstalled": false
   },
   {
     "id": "wsl",

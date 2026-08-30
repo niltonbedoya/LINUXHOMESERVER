@@ -163,17 +163,47 @@ el override de VirtualBox, se reconstruyeron solo frontend/backend y se añadier
 del bundle y preflight CORS. Todo pasa y el usuario confirmó el funcionamiento real el
 30 de agosto de 2026; G3 queda cerrada.
 
-## Fase 4 — IA y administración (servidor completado)
+## Fase 4 — Herramientas y administración (completada; G4 cerrada)
 
 - 4A: URLs oficiales verificadas sin iniciar sesión.
-- 4B: siete enlaces simples en `🤖 INTELIGENCIA ARTIFICIAL`.
+- 4B: primera selección de siete enlaces IA.
 - 4C: Tailscale Admin, Uptime Kuma Admin y GitHub en `🛠 ADMINISTRACIÓN`.
 - 4D: validación runtime, enlaces/TLS y regresiones completas.
+- 4E: clasificación ampliada en LLM, IDE, agentes/CLI, terminales y plataformas IA.
+- 4F: lanzador Windows con allowlist, AppID/comandos conocidos y fallback HTTPS.
 
-Estado: implementación y pruebas automáticas completadas; pendiente de aprobación visual
-G4 antes de iniciar PWA y refinamiento.
+Estado: servidor y catálogo de 13 destinos validados; lanzador instalado en Windows.
+Windows Terminal se retiró por duplicar PowerShell y OpenCode se corrigió con una Tab
+Config fija de Warp. El usuario confirmó el funcionamiento y la presentación; G4 queda
+cerrada y la Fase 5 puede iniciarse cuando se solicite.
 
-## Fase 5 — PWA y refinamiento (futura)
+## Fase 5 — Métricas de equipos y refinamiento (en curso)
 
-- Validar iconos, manifest, pantalla de inicio y experiencia Android.
-- Ajustar diseño sin añadir APK nativa.
+### 5A — Descubrimiento y SDD (completada)
+
+- Verificados Nilton PC, DEV, Raspberry Pi y PROD en Tailscale.
+- Confirmado que ninguno expone todavía Glances 61208 al contenedor Homepage.
+- Definidos aislamiento, autenticación, métricas, tolerancias y rollback.
+- Teléfono y futuro NAS excluidos expresamente.
+- No se modificó configuración operativa ni se reinició ningún servicio.
+
+Documento: `fase-5a-monitorizacion-equipos.md`.
+
+### 5B — Nilton PC (implantación completada; G5B pendiente de confirmación)
+
+- Agente Glances 4.5.6 instalado y validado con allowlist sin procesos.
+- Listener y firewall limitados a Tailscale/Mac mini; secreto fuera de Git.
+- Grupo `🖥 EQUIPOS` y tarjeta compacta Nilton PC desplegados.
+- Homepage healthy, proxy autenticado y regresión completa aprobados.
+- Pendiente: confirmación visual y prueba controlada de caída/recuperación.
+
+### Fases siguientes
+
+- 5C: servidor DEV y patrón Linux.
+- 5D: Raspberry Pi actual, sin discos del futuro NAS.
+- 5E: servidor PROD, último por criticidad.
+- 5F: integración completa de los cuatro nodos en `🖥 EQUIPOS`, pruebas conjuntas de
+  fallo aislado y refinamiento visual.
+
+Cada subfase tendrá una puerta y evidencia separada. No se monitorizará el teléfono ni
+se desarrollará una APK/PWA específica para recopilar sus métricas.

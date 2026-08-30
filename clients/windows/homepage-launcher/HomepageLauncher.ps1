@@ -37,7 +37,11 @@ if ($toolId -notmatch '^[a-z0-9]+(?:-[a-z0-9]+)*$') {
 }
 
 try {
-    $catalog = @(Get-Content -LiteralPath $catalogPath -Raw | ConvertFrom-Json)
+    $catalogDocument = Get-Content -LiteralPath $catalogPath -Raw | ConvertFrom-Json
+    $catalog = @()
+    foreach ($catalogItem in $catalogDocument) {
+        $catalog += $catalogItem
+    }
 } catch {
     Stop-Launcher "No se pudo leer el catálogo: $($_.Exception.Message)"
 }
@@ -67,6 +71,15 @@ if (-not $registeredApp) {
     }
 }
 
+if ($tool.mode -eq 'warp-tab') {
+    $warpTabConfig = Join-Path $env:APPDATA (
+        "warp\Warp\data\tab_configs\{0}.toml" -f $tool.tabConfig
+    )
+    if (-not (Test-Path -LiteralPath $warpTabConfig -PathType Leaf)) {
+        $resolvedCommand = $null
+    }
+}
+
 if ($registeredApp) {
     $resolution = [ordered]@{
         id = $tool.id
@@ -75,11 +88,21 @@ if ($registeredApp) {
         target = $registeredApp.AppID
     }
 } elseif ($resolvedCommand) {
+    if ($tool.mode -eq 'cli') {
+        $resolvedAction = 'cli'
+        $resolvedTarget = $resolvedCommand.Source
+    } elseif ($tool.mode -eq 'warp-tab') {
+        $resolvedAction = 'warp-tab'
+        $resolvedTarget = "warp://tab_config/$($tool.tabConfig)"
+    } else {
+        $resolvedAction = 'executable'
+        $resolvedTarget = $resolvedCommand.Source
+    }
     $resolution = [ordered]@{
         id = $tool.id
         name = $tool.name
-        action = $tool.mode
-        target = $resolvedCommand.Source
+        action = $resolvedAction
+        target = $resolvedTarget
     }
 } else {
     $resolution = [ordered]@{
@@ -108,6 +131,12 @@ try {
             } else {
                 Start-Process -FilePath $resolution.target
             }
+        }
+        'executable' {
+            Start-Process -FilePath $resolution.target
+        }
+        'warp-tab' {
+            Start-Process -FilePath $resolution.target
         }
         default {
             Start-Process -FilePath $resolution.target

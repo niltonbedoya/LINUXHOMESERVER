@@ -24,6 +24,7 @@ required_files=(
     scripts/deploy.sh
     scripts/publish-tailscale.sh
     scripts/smoke-test.sh
+    scripts/set-nilton-pc-metrics-secret.sh
     tests/static.sh
     tests/compose.sh
     tests/runtime.sh
@@ -35,6 +36,9 @@ required_files=(
     tests/phase4.sh
     tests/phase4_validate.py
     tests/launcher_catalog_validate.py
+    tests/windows_metrics_agent_validate.py
+    tests/nilton-pc.sh
+    tests/nilton_pc_validate.py
     tests/production.sh
     tests/production_validate.py
     tests/tailscale.sh
@@ -95,9 +99,25 @@ if rg -q '^- resources:' "${HOMEPAGE_CONFIG_DIR}/widgets.yaml"; then
 fi
 
 group_count="$(rg -c '^- ' "${HOMEPAGE_CONFIG_DIR}/services.yaml")"
-[[ "${group_count}" == "9" ]] || fail "services.yaml debe contener exactamente nueve grupos"
+[[ "${group_count}" == "10" ]] || fail "services.yaml debe contener exactamente diez grupos"
 rg -q '^- 🏠 HOME SERVER:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Falta el grupo HOME SERVER"
+rg -q '^- 🖥 EQUIPOS:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Falta el grupo EQUIPOS"
+rg -q '^    - Nilton PC:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Falta la tarjeta de Nilton PC"
+rg -q '^          url: http://nilton-pc\.tailf553c4\.ts\.net:61208$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Nilton PC no usa MagicDNS privado"
+rg -q '^          username: "\{\{HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME\}\}"$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de usuario de Nilton PC"
+rg -q '^          password: "\{\{HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD\}\}"$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de password de Nilton PC"
+rg -q '^          metric: info$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Nilton PC no usa la métrica compacta info"
+rg -q '^          chart: false$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Nilton PC no usa vista compacta"
+rg -q '^  🖥 EQUIPOS:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
+    fail "Falta el layout de EQUIPOS"
 rg -q '^- 🚨 PRODUCCIÓN:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Falta el grupo inequívoco de PRODUCCIÓN"
 rg -q '^    - Servidor Ubuntu PROD:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
@@ -147,17 +167,35 @@ if rg -ni 'service-ab-electronics\.com' \
     fail "Aparece un dominio incorrecto o un elemento reservado para fases futuras"
 fi
 
-if rg -ni 'api[_-]?key\s*:|token\s*:|password\s*:|BEGIN [A-Z ]*PRIVATE KEY' \
+if rg -ni 'api[_-]?key\s*:|token\s*:|BEGIN [A-Z ]*PRIVATE KEY' \
     "${HOMEPAGE_PROJECT_DIR}/compose.yaml" "${HOMEPAGE_CONFIG_DIR}"; then
     fail "Se detectó un posible secreto"
+fi
+if rg -ni 'password\s*:' "${HOMEPAGE_PROJECT_DIR}/compose.yaml" "${HOMEPAGE_CONFIG_DIR}" | \
+    rg -v 'HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD'; then
+    fail "Se detectó un password sin placeholder controlado"
 fi
 
 LAUNCHER_DIR="${HOMEPAGE_PROJECT_DIR}/../../clients/windows/homepage-launcher"
 for launcher_file in tools.json HomepageLauncher.ps1 Install-HomepageLauncher.ps1 \
-    Uninstall-HomepageLauncher.ps1 Test-HomepageLauncher.ps1 README.md; do
+    Uninstall-HomepageLauncher.ps1 Test-HomepageLauncher.ps1 \
+    warp-homepage-opencode.toml README.md; do
     [[ -s "${LAUNCHER_DIR}/${launcher_file}" ]] || \
         fail "Falta el archivo del lanzador: ${launcher_file}"
 done
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/launcher_catalog_validate.py"
+python3 "${HOMEPAGE_PROJECT_DIR}/tests/windows_metrics_agent_validate.py"
+
+SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-nilton-pc-metrics-secret.sh"
+rg -q 'IFS= read -r secret' "${SECRET_SETTER}" || \
+    fail "El secreto de Nilton PC no se recibe por stdin"
+rg -q 'chmod 600' "${SECRET_SETTER}" || \
+    fail "El archivo local de secretos no fija modo 600"
+if rg -n 'echo.*\$\{?secret|printf.*%s.*\$\{?secret' "${SECRET_SETTER}" | \
+    rg -v 'HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD'; then
+    fail "El setter podría imprimir el secreto"
+fi
+git -C "${HOMEPAGE_PROJECT_DIR}" check-ignore -q .env || \
+    fail "services/homepage/.env no está ignorado por Git"
 
 echo "Pruebas estáticas: OK"

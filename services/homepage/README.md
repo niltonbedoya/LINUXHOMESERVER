@@ -1,6 +1,9 @@
 # Homepage — configuración operativa
 
-Estado: Fase 4 completada en el servidor y pendiente de validación visual. Homepage funciona localmente en
+Estado: Fase 4 completada y G4 cerrada; la implantación 5B de Nilton PC está operativa
+y pendiente de confirmación visual/prueba de caída. Servidor, lanzador Windows, clics y
+presentación previa están validados.
+Homepage funciona localmente en
 `127.0.0.1:3000` con estado Docker restringido y métricas reales del host, y está
 publicado de forma privada en:
 
@@ -8,8 +11,19 @@ publicado de forma privada en:
 https://macmini-server.tailf553c4.ts.net:10000/
 ```
 
-Grupos actuales: `🏠 HOME SERVER`, `🚨 PRODUCCIÓN`, `🧪 DESARROLLO / DEV`,
-`🤖 INTELIGENCIA ARTIFICIAL` y `🛠 ADMINISTRACIÓN`.
+Grupos actuales: HOME SERVER, EQUIPOS, PRODUCCIÓN, DESARROLLO/DEV, LLM Y CHAT IA, IDE Y
+EDITORES, AGENTES Y CLI, TERMINALES Y SHELLS, PLATAFORMAS IA y ADMINISTRACIÓN.
+
+Nilton PC ya aporta métricas privadas autenticadas. DEV, Raspberry Pi y PROD permanecen
+pendientes. El teléfono queda excluido.
+
+La credencial de Nilton PC se recibe exclusivamente por stdin mediante
+`scripts/set-nilton-pc-metrics-secret.sh`. Se guarda en `.env` con modo 600, archivo
+ignorado por Git. Nunca pasar el secreto como argumento ni pegarlo en documentación.
+
+Los enlaces `homeserver-launch://` requieren instalar el cliente documentado en
+`/home/bedvil/server/clients/windows/homepage-launcher`. El servidor no puede detectar
+aplicaciones instaladas en Windows.
 
 Ruta versionada:
 

@@ -47,17 +47,22 @@ GitHub Copilot Pro; Antigravity sustituyó el uso directo anterior de Gemini.
 
 ## Estado resumido
 
-Comprobado el 29 de agosto de 2026:
+Comprobado el 30 de agosto de 2026:
 
 - Linux Mint 22.3 y kernel 6.14.0-37-generic.
 - Docker 29.1.3 y Compose 2.40.3.
 - `n8n` y `uptime-kuma` están activos.
 - Homepage está healthy, con estado Docker restringido y métricas reales, y disponible
-  por HTTPS privado en `https://macmini-server.tailf553c4.ts.net:10000/`; incluye HOME
-  SERVER, PRODUCCIÓN, DESARROLLO/DEV, IA y ADMINISTRACIÓN, validados automáticamente.
+  por HTTPS privado en `https://macmini-server.tailf553c4.ts.net:10000/`; separa HOME,
+  EQUIPOS, PROD, DEV, LLM, IDE, agentes/CLI, terminales, plataformas IA y Administración.
+- El lanzador Windows seguro de Fase 4 está instalado y validado con 13 destinos; G4
+  quedó cerrada tras confirmar aplicaciones, fallbacks, OpenCode en Warp y diseño.
 - Tailscale está activo.
 - El bot de Telegram se inicia al arrancar mediante `telegram_bot_loop.sh`.
 - El acceso real a Docker funciona para `bedvil`; el sandbox de Codex puede bloquearlo.
+- La Fase 5B de Homepage ya obtiene métricas privadas de Nilton PC mediante Glances
+  autenticado sobre Tailscale. DEV, Raspberry Pi y PROD siguen pendientes; el teléfono
+  está excluido.
 
 Consulta [docs/estado-actual.md](docs/estado-actual.md) antes de operar y
 [docs/pendientes.md](docs/pendientes.md) antes de iniciar trabajo nuevo.

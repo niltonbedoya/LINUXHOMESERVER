@@ -1,0 +1,11 @@
+name = "Homepage OpenCode"
+title = "OpenCode"
+color = "green"
+
+[[panes]]
+id = "opencode"
+type = "terminal"
+shell = "bash"
+directory = "~"
+commands = ["opencode.cmd"]
+is_focused = true

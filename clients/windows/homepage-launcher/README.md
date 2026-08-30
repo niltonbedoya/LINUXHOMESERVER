@@ -3,7 +3,9 @@
 Lanzador local del protocolo `homeserver-launch://`. Solo admite los identificadores
 incluidos en `tools.json`: no ejecuta comandos, rutas ni argumentos recibidos desde la
 web. Busca primero una aplicación registrada o un comando conocido y, si no existe,
-abre exclusivamente la URL HTTPS oficial configurada como fallback.
+abre exclusivamente la URL HTTPS oficial configurada como fallback. OpenCode es la única
+excepción de ejecución: abre una Tab Config fija de Warp que usa Bash y ejecuta
+`opencode.cmd`, sin aceptar argumentos desde Homepage.
 
 ## Instalación
 
@@ -15,9 +17,11 @@ Set-ExecutionPolicy -Scope Process RemoteSigned
 & "$env:TEMP\homepage-launcher\Install-HomepageLauncher.ps1"
 ```
 
-No requiere administrador. Instala tres archivos en
+No requiere administrador. Instala los archivos del manejador en
 `%LOCALAPPDATA%\HomepageLauncher` y registra el protocolo únicamente para el usuario
-actual en `HKCU\Software\Classes\homeserver-launch`.
+actual en `HKCU\Software\Classes\homeserver-launch`. También instala
+`homepage_opencode.toml` en el directorio de Tab Configs de Warp; si ya existe con otro
+contenido crea un backup fechado antes de sustituirlo.
 
 ## Pruebas
 
@@ -33,8 +37,8 @@ declarados como instalados y rechaza rutas, parámetros e identificadores no per
 
 ## Desinstalación
 
-```powershell
-& "$env:TEMP\homepage-launcher\Uninstall-HomepageLauncher.ps1"
-```
+Elimina únicamente el registro y la copia local creados por este componente:
 
-Elimina únicamente el registro y la copia local creados por este componente.
+```powershell
+& "$env:LOCALAPPDATA\HomepageLauncher\Uninstall-HomepageLauncher.ps1"
+```

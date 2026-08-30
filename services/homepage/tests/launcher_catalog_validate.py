@@ -23,7 +23,7 @@ for tool in catalog:
     tool_id = tool.get("id", "")
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", tool_id):
         raise SystemExit(f"ERROR: identificador no permitido: {tool_id!r}")
-    if tool.get("mode") not in {"app", "cli"}:
+    if tool.get("mode") not in {"app", "cli", "warp-tab"}:
         raise SystemExit(f"ERROR: modo no permitido para {tool_id}")
     fallback = tool.get("fallbackUrl", "")
     if not fallback.startswith("https://"):
@@ -50,6 +50,20 @@ for tool_id, app_id in expected_installed.items():
     if not tool or not tool.get("expectedInstalled") or app_id not in tool["appIds"]:
         raise SystemExit(f"ERROR: AppID verificado ausente para {tool_id}")
 
+opencode = by_id.get("opencode", {})
+if (
+    opencode.get("mode") != "warp-tab"
+    or opencode.get("commands", [None])[0] != "opencode.cmd"
+    or opencode.get("tabConfig") != "homepage_opencode"
+    or not opencode.get("expectedInstalled")
+):
+    raise SystemExit("ERROR: OpenCode no está fijado a su Tab Config de Warp")
+
+warp_tab_config = launcher_root / "warp-homepage-opencode.toml"
+warp_tab_text = warp_tab_config.read_text(encoding="utf-8")
+if 'shell = "bash"' not in warp_tab_text or 'commands = ["opencode.cmd"]' not in warp_tab_text:
+    raise SystemExit("ERROR: la Tab Config no fija Bash y opencode.cmd")
+
 handler = handler_path.read_text(encoding="utf-8")
 for guard in (
     "homeserver-launch",
@@ -64,5 +78,8 @@ for guard in (
 for forbidden in ("Invoke-Expression", "iex ", "cmd /c"):
     if forbidden.lower() in handler.lower():
         raise SystemExit(f"ERROR: construcción prohibida en el lanzador: {forbidden}")
+
+if len(catalog) != 13:
+    raise SystemExit(f"ERROR: se esperaban 13 destinos y hay {len(catalog)}")
 
 print(f"Catálogo estático del lanzador: OK ({len(catalog)} destinos)")
