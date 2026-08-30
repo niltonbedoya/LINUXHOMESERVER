@@ -43,6 +43,8 @@
 | Homepage Nilton PC | Usar Glances 4.5.6 en venv propio, tarea SYSTEM y firewall Tailscale limitado al Mac mini | No altera Hermes/Python global y evita exposición por LAN o a otros nodos |
 | Homepage Nilton PC | Usar `metric: info`, `chart: false` y refresco de 5 s | Presenta CPU/RAM en una tarjeta compacta sin cargar procesos ni saturar la cabecera |
 | Homepage métricas | Tratar la Raspberry Pi actual y el futuro NAS como alcances distintos | Observar el equipo no adelanta almacenamiento, backups ni diseño del NAS |
+| Integración continua | Ejecutar pruebas estáticas, Compose, validadores sintéticos, scripts PowerShell y URLs externas en GitHub Actions | Agiliza el desarrollo y asegura la calidad del repositorio ejecutando la suite de validación en la nube |
+
 
 ## Cómo registrar nuevas decisiones
 
