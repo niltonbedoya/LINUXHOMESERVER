@@ -125,3 +125,8 @@ con acceso apropiado.
 - La regresión completa posterior pasó para Homepage, n8n, Kuma, OpenClaw, PROD, DEV y
   Tailscale. Quedan la confirmación visual del usuario y la prueba manual de caída
   aislada antes de cerrar formalmente G5B.
+- Se ha configurado GitHub Actions CI (`.github/workflows/ci.yml`) para ejecutar
+  automáticamente en GitHub la validación estática, seguridad, Compose, unit tests de
+  validadores sintéticos (`ci_synthetic_test.py`), scripts de PowerShell y health checks
+  de URLs externas en cada `push` y `pull_request`.
+

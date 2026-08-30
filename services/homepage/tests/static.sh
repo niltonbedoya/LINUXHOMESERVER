@@ -43,6 +43,7 @@ required_files=(
     tests/production_validate.py
     tests/tailscale.sh
     tests/tailscale_validate.py
+    tests/ci_synthetic_test.py
     tests/regression.sh
 )
 
@@ -185,6 +186,7 @@ for launcher_file in tools.json HomepageLauncher.ps1 Install-HomepageLauncher.ps
 done
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/launcher_catalog_validate.py"
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/windows_metrics_agent_validate.py"
+python3 "${HOMEPAGE_PROJECT_DIR}/tests/ci_synthetic_test.py"
 
 SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-nilton-pc-metrics-secret.sh"
 rg -q 'IFS= read -r secret' "${SECRET_SETTER}" || \
