@@ -1,8 +1,7 @@
 # Homepage — configuración operativa
 
-Estado: Fase 4 completada y G4 cerrada; la implantación 5B de Nilton PC está operativa
-y pendiente de confirmación visual/prueba de caída. Servidor, lanzador Windows, clics y
-presentación previa están validados.
+Estado: Fases 5B (Nilton PC) y 5C (DEV) completadas; ambas tarjetas y pruebas de caída
+están validadas. Servidor, lanzador Windows, clics y presentación previa están validados.
 Homepage funciona localmente en
 `127.0.0.1:3000` con estado Docker restringido y métricas reales del host, y está
 publicado de forma privada en:
@@ -14,8 +13,8 @@ https://macmini-server.tailf553c4.ts.net:10000/
 Grupos actuales: HOME SERVER, EQUIPOS, PRODUCCIÓN, DESARROLLO/DEV, LLM Y CHAT IA, IDE Y
 EDITORES, AGENTES Y CLI, TERMINALES Y SHELLS, PLATAFORMAS IA y ADMINISTRACIÓN.
 
-Nilton PC ya aporta métricas privadas autenticadas. DEV, Raspberry Pi y PROD permanecen
-pendientes. El teléfono queda excluido.
+Nilton PC y DEV ya aportan métricas privadas autenticadas. PROD permanece pendiente.
+Raspberry Pi y teléfono quedan excluidos de este proyecto.
 
 La credencial de Nilton PC se recibe exclusivamente por stdin mediante
 `scripts/set-nilton-pc-metrics-secret.sh`. Se guarda en `.env` con modo 600, archivo

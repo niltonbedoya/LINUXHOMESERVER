@@ -82,17 +82,19 @@ El contexto histórico indica que el administrador inicial ya fue creado.
 
 ### Métricas remotas previstas
 
-La Fase 5A diseña agentes Glances independientes en Nilton PC, DEV, Raspberry Pi y PROD.
+La Fase 5A diseñó agentes Glances para Nilton PC, DEV, Raspberry Pi y PROD. Tras 5C, la
+Raspberry Pi se retiró de este alcance para tratarla como un proyecto independiente.
 Nilton PC es el primer nodo desplegado: Glances 4.5.6 se ejecuta en un venv propio,
 escucha únicamente en su IP Tailscale `100.105.88.14:61208`, autentica las métricas y
 limita el firewall al Mac mini. Su allowlist excluye procesos y programas. Homepage lo
 consulta por MagicDNS y recibe las credenciales desde un `.env` local ignorado por Git.
 
-DEV, Raspberry Pi y PROD siguen pendientes en ese orden. El patrón Linux se validará
-fuera de producción antes de modificar PROD.
+DEV aplica ya el patrón Linux: Glances 4.5.6 en venv, usuario de sistema, unidades
+systemd y cadena `iptables` exclusiva que solo permite el Mac mini por `tailscale0`.
+PROD es el único nodo remoto pendiente en este proyecto.
 
-El teléfono no forma parte del sistema de métricas. La Raspberry Pi se observará como
-equipo actual, sin anticipar los discos ni las responsabilidades del futuro NAS.
+El teléfono no forma parte del sistema de métricas. La Raspberry Pi, su instalación desde
+cero y el futuro NAS se gestionarán en otro proyecto.
 
 ## Tailscale Serve
 

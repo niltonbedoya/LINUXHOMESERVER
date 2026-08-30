@@ -25,6 +25,8 @@ required_files=(
     scripts/publish-tailscale.sh
     scripts/smoke-test.sh
     scripts/set-nilton-pc-metrics-secret.sh
+    scripts/set-dev-metrics-secret.sh
+    scripts/import-dev-metrics-secret.sh
     tests/static.sh
     tests/compose.sh
     tests/runtime.sh
@@ -37,8 +39,11 @@ required_files=(
     tests/phase4_validate.py
     tests/launcher_catalog_validate.py
     tests/windows_metrics_agent_validate.py
+    tests/linux_metrics_agent_validate.py
     tests/nilton-pc.sh
     tests/nilton_pc_validate.py
+    tests/dev-metrics.sh
+    tests/dev_metrics_validate.py
     tests/production.sh
     tests/production_validate.py
     tests/tailscale.sh
@@ -117,6 +122,14 @@ rg -q '^          metric: info$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Nilton PC no usa la métrica compacta info"
 rg -q '^          chart: false$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Nilton PC no usa vista compacta"
+rg -q '^    - Servidor DEV:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Falta la tarjeta de métricas DEV"
+rg -q '^          url: http://tickets-server-dev\.tailf553c4\.ts\.net:61208$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "DEV no usa MagicDNS privado"
+rg -q '^          username: "\{\{HOMEPAGE_VAR_DEV_GLANCES_USERNAME\}\}"$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de usuario DEV"
+rg -q '^          password: "\{\{HOMEPAGE_VAR_DEV_GLANCES_PASSWORD\}\}"$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de password DEV"
 rg -q '^  🖥 EQUIPOS:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
     fail "Falta el layout de EQUIPOS"
 rg -q '^- 🚨 PRODUCCIÓN:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
@@ -173,7 +186,7 @@ if rg -ni 'api[_-]?key\s*:|token\s*:|BEGIN [A-Z ]*PRIVATE KEY' \
     fail "Se detectó un posible secreto"
 fi
 if rg -ni 'password\s*:' "${HOMEPAGE_PROJECT_DIR}/compose.yaml" "${HOMEPAGE_CONFIG_DIR}" | \
-    rg -v 'HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD'; then
+    rg -v 'HOMEPAGE_VAR_(NILTON_PC|DEV)_GLANCES_PASSWORD'; then
     fail "Se detectó un password sin placeholder controlado"
 fi
 
@@ -186,6 +199,7 @@ for launcher_file in tools.json HomepageLauncher.ps1 Install-HomepageLauncher.ps
 done
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/launcher_catalog_validate.py"
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/windows_metrics_agent_validate.py"
+python3 "${HOMEPAGE_PROJECT_DIR}/tests/linux_metrics_agent_validate.py"
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/ci_synthetic_test.py"
 
 SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-nilton-pc-metrics-secret.sh"
@@ -199,5 +213,8 @@ if rg -n 'echo.*\$\{?secret|printf.*%s.*\$\{?secret' "${SECRET_SETTER}" | \
 fi
 git -C "${HOMEPAGE_PROJECT_DIR}" check-ignore -q .env || \
     fail "services/homepage/.env no está ignorado por Git"
+DEV_SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-dev-metrics-secret.sh"
+rg -q 'IFS= read -r secret' "${DEV_SECRET_SETTER}" || fail "El secreto DEV no se recibe por stdin"
+rg -q 'chmod 600' "${DEV_SECRET_SETTER}" || fail "El secreto DEV no fija modo 600"
 
 echo "Pruebas estáticas: OK"

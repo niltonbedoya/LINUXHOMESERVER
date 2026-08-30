@@ -1,6 +1,6 @@
 # Fase 5B — Nilton PC
 
-Estado: **implantación completada; G5B pendiente de confirmación visual y caída aislada**.
+Estado: **completada; G5B cerrada**.
 
 ## Estado previo verificado
 
@@ -211,5 +211,17 @@ exacta y HTTP 400 para procesos/programas. El proxy real del widget también res
 La batería completa pasó: estática, Compose, runtime, Docker proxy, métricas locales,
 PROD, DEV, herramientas, Nilton PC, HTTPS/Tailscale y regresión de n8n/Kuma/OpenClaw.
 
-Estado: **implantación 5B completada; G5B pendiente de confirmación visual y prueba
-controlada de caída/recuperación del agente**.
+El usuario confirmó además que la tarjeta se ve y funciona desde Homepage.
+
+## Prueba de caída aislada y cierre G5B
+
+Con autorización del usuario se detuvo solamente la tarea `HomepageMetricsAgent`. En
+Windows quedó `Ready` y no hubo listener 61208. Desde el contenedor Homepage, la API de
+Nilton PC devolvió `ECONNREFUSED`, mientras Homepage siguió `running`, `healthy` y con
+cero reinicios. La prueba de runtime pasó durante la caída.
+
+Al iniciar de nuevo la tarea, el test local devolvió OK (CPU, RAM, disco y uptime) y el
+test desde Homepage confirmó de nuevo API autenticada, privacidad, proxy del widget y
+regresión. El usuario confirmó también la tarjeta visualmente.
+
+Estado: **Fase 5B completada; G5B cerrada**.

@@ -11,6 +11,8 @@ services:
       HOMEPAGE_ALLOWED_HOSTS: macmini-server.tailf553c4.ts.net:10000
       HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME: ${HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME:?falta usuario Glances de Nilton PC}
       HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD: ${HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD:?falta password Glances de Nilton PC}
+      HOMEPAGE_VAR_DEV_GLANCES_USERNAME: ${HOMEPAGE_VAR_DEV_GLANCES_USERNAME:?falta usuario Glances DEV}
+      HOMEPAGE_VAR_DEV_GLANCES_PASSWORD: ${HOMEPAGE_VAR_DEV_GLANCES_PASSWORD:?falta password Glances DEV}
       TZ: Europe/Madrid
     volumes:
       - ./config:/app/config

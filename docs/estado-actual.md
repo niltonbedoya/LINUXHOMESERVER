@@ -123,10 +123,22 @@ con acceso apropiado.
   compacta Nilton PC usa MagicDNS, autenticación y muestra CPU/RAM; la prueba remota
   validó también disco, uptime, rechazo anónimo y ausencia de plugins de procesos.
 - La regresión completa posterior pasó para Homepage, n8n, Kuma, OpenClaw, PROD, DEV y
-  Tailscale. Quedan la confirmación visual del usuario y la prueba manual de caída
-  aislada antes de cerrar formalmente G5B.
+  Tailscale. El usuario confirmó la visualización real. La prueba controlada detuvo solo
+  el agente: Nilton PC devolvió `ECONNREFUSED` mientras Homepage siguió healthy y sin
+  reinicios. Tras restaurar la tarea, el test local y la consulta autenticada desde
+  Homepage volvieron a pasar. G5B queda cerrado.
 - Se ha configurado GitHub Actions CI (`.github/workflows/ci.yml`) para ejecutar
   automáticamente en GitHub la validación estática, seguridad, Compose, unit tests de
   validadores sintéticos (`ci_synthetic_test.py`), scripts de PowerShell y health checks
   de URLs externas en cada `push` y `pull_request`.
-
+- La Fase 5C verificó SSH por clave y el inventario de DEV: Ubuntu 26.04, Python 3.14.4
+  con venv, sin Glances ni listener 61208, Tickets sano y sin sensores. Falta consultar
+  el firewall con elevación antes de modificar el nodo.
+- La Fase 5C instaló después Glances 4.5.6 en un venv aislado de DEV, con unidades
+  systemd y firewall `iptables` dedicados: 61208 escucha solo en `100.80.93.74` y acepta
+  únicamente al Mac mini `100.72.206.57` por Tailscale. El usuario confirmó la tarjeta.
+  La caída aislada devolvió `ECONNREFUSED` sin afectar Tickets ni Homepage; tras iniciar
+  el servicio, las pruebas local/remota y la regresión volvieron a pasar. G5C cerrado.
+- La Raspberry Pi se retiró de la Fase 5: será un proyecto independiente de instalación
+  desde cero y no recibirá agente ni tarjeta Homepage en este alcance. PROD queda como
+  único nodo remoto pendiente.

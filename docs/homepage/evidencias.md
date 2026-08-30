@@ -716,5 +716,24 @@ No se añadieron todavía secretos ni tarjetas a Homepage.
 - Validación y smoke tests completos terminaron con salida 0; 443, 8443 y 10000 se
   conservaron y el acceso LAN 3000 continuó rechazado.
 
-Pendiente para G5B: confirmación visual del usuario y prueba controlada de apagar y
-recuperar solo el agente Windows mientras Homepage permanece healthy.
+El usuario confirmó la visualización correcta de la tarjeta.
+
+### Caída aislada y recuperación — G5B cerrada
+
+- La tarea `HomepageMetricsAgent` se detuvo; Windows quedó `Ready` y sin listener 61208.
+- Desde Homepage, Nilton PC respondió `ECONNREFUSED` como se esperaba.
+- Homepage permaneció `running`, `healthy`, cero reinicios y su test runtime pasó.
+- Al arrancar la tarea, el test local y la prueba remota autenticada volvieron a pasar.
+- Regresión Tailscale/n8n/Kuma/OpenClaw: OK.
+
+## Fase 5C — DEV (G5C cerrada)
+
+- SSH por clave y huella ED25519 de DEV verificados antes de operar.
+- Inventario: Ubuntu 26.04, Python 3.14.4, sin Glances/61208 ni sensores; Tickets sano.
+- Glances 4.5.6 aislado de Tickets mediante venv, usuario systemd y plugins mínimos.
+- Firewall dedicado: solo `100.72.206.57` por `tailscale0` acepta 61208; resto DROP.
+- Homepage healthy y proxy DEV validado: CPU/RAM/disco dentro de tolerancia, 401 anónimo,
+  procesos HTTP 400 y secretos ausentes de la API pública.
+- El usuario confirmó la tarjeta. Al detener solo el agente, DEV devolvió
+  `ECONNREFUSED`; Tickets y Homepage quedaron sanos. La recuperación local/remota y las
+  regresiones volvieron a pasar.

@@ -20,6 +20,12 @@ la Raspberry Pi de esta fase solo aportará métricas de su sistema actual.
 Homepage será un resumen visual. Uptime Kuma conserva alertas e histórico y no se
 duplicará esa responsabilidad.
 
+### Cambio de alcance posterior
+
+Tras completar 5C, el usuario retiró la Raspberry Pi de este proyecto: se instalará desde
+cero y se documentará en un proyecto independiente. En consecuencia, 5D queda
+descartada aquí y PROD pasa a ser el único despliegue remoto pendiente de Homepage.
+
 ## 2. Estado real descubierto
 
 | Equipo | MagicDNS canónico | IP observada | Estado Tailscale | API Glances 61208 |
@@ -47,7 +53,6 @@ consultará por MagicDNS a través de Tailscale:
 Homepage (Mac mini)
     ├── Tailscale → Glances Nilton PC
     ├── Tailscale → Glances DEV
-    ├── Tailscale → Glances Raspberry Pi
     └── Tailscale → Glances PROD
 ```
 
@@ -75,7 +80,6 @@ aplicaciones.
 |---|---|---|
 | Nilton PC | CPU, RAM, filesystem, uptime | red y GPU si la API real las valida |
 | DEV | CPU, RAM, disco, uptime | red; sin temperatura si la VM no expone sensor |
-| Raspberry Pi | CPU, RAM, raíz, uptime | red y temperatura CPU si coincide con el host |
 | PROD | CPU, RAM, disco, uptime | red y temperatura solo si son fiables |
 
 La temperatura de Windows se omite inicialmente porque los sensores de Glances están
@@ -97,7 +101,7 @@ y las métricas locales del Mac mini deben continuar funcionando.
 1. **5A — Descubrimiento y SDD:** este documento; sin cambios operativos.
 2. **5B — Nilton PC:** primer despliegue y validación del patrón Windows.
 3. **5C — DEV:** patrón Linux en la VM, sin modificar la aplicación de Tickets.
-4. **5D — Raspberry Pi:** patrón Linux ARM y sensor térmico si es fiable.
+4. **5D — descartada:** Raspberry Pi pasa a proyecto independiente.
 5. **5E — PROD:** último despliegue, tras reutilizar el patrón ya probado.
 6. **5F — Integración y diseño:** tarjetas, pruebas de fallo aislado y refinamiento visual.
 
@@ -139,4 +143,3 @@ no se tocarán las reglas 443/8443/10000 y no se reiniciarán aplicaciones ajena
 - [CLI y opciones web de Glances](https://glances.readthedocs.io/en/latest/glances.html)
 - [API REST y seguridad de Glances](https://glances.readthedocs.io/en/develop/api/restful.html)
 - [Conexión entre dispositivos Tailscale](https://tailscale.com/kb/1452/connect-to-devices)
-

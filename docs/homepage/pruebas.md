@@ -126,7 +126,7 @@ Las comparaciones se capturan en una ventana corta para reducir variación:
 - El instalador Windows termina con `Pruebas del lanzador: OK (13 destinos)`.
 - VS Code, Cursor, Antigravity, Hermes Desktop, Warp y PowerShell se abren localmente.
 - Al menos una herramienta ausente abre su web oficial en lugar de ejecutar código.
-- Cada tarjeta de `🖥 EQUIPOS` identifica claramente PC, DEV, Raspberry Pi o PROD.
+- Cada tarjeta de `🖥 EQUIPOS` identifica claramente PC, DEV o PROD.
 - Un equipo apagado no impide usar el resto del dashboard.
 
 ## 7. Evidencia por puerta

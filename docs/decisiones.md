@@ -42,7 +42,10 @@
 | Homepage métricas | Mantener credenciales fuera de Git mediante variables locales | Homepage necesita consultar la API sin versionar contraseñas |
 | Homepage Nilton PC | Usar Glances 4.5.6 en venv propio, tarea SYSTEM y firewall Tailscale limitado al Mac mini | No altera Hermes/Python global y evita exposición por LAN o a otros nodos |
 | Homepage Nilton PC | Usar `metric: info`, `chart: false` y refresco de 5 s | Presenta CPU/RAM en una tarjeta compacta sin cargar procesos ni saturar la cabecera |
+| Homepage DEV | Usar venv Glances + usuario systemd propio; no tocar Docker/Tickets | Aísla el agente de la aplicación de pruebas y de su Python global |
+| Homepage DEV | Mantener UFW inactivo y usar una cadena `iptables` exclusiva en `tailscale0` | El host no tenía firewall de entrada activo; limita 61208 solo al Mac mini |
 | Homepage métricas | Tratar la Raspberry Pi actual y el futuro NAS como alcances distintos | Observar el equipo no adelanta almacenamiento, backups ni diseño del NAS |
+| Homepage métricas | Retirar Raspberry Pi de Fase 5 | Se instalará desde cero y se gestionará como proyecto independiente antes de añadir métricas |
 | Integración continua | Ejecutar pruebas estáticas, Compose, validadores sintéticos, scripts PowerShell y URLs externas en GitHub Actions | Agiliza el desarrollo y asegura la calidad del repositorio ejecutando la suite de validación en la nube |
 
 

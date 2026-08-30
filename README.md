@@ -108,9 +108,9 @@ Comprobado el 30 de agosto de 2026:
 - Tailscale está activo.
 - El bot de Telegram se inicia al arrancar mediante `telegram_bot_loop.sh`.
 - El acceso real a Docker funciona para `bedvil`; el sandbox de Codex puede bloquearlo.
-- La Fase 5B de Homepage ya obtiene métricas privadas de Nilton PC mediante Glances
-  autenticado sobre Tailscale. DEV, Raspberry Pi y PROD siguen pendientes; el teléfono
-  está excluido.
+- Las Fases 5B y 5C de Homepage ya obtienen métricas privadas de Nilton PC y DEV
+  mediante Glances autenticado sobre Tailscale. PROD sigue pendiente; Raspberry Pi y
+  teléfono están excluidos de este proyecto.
 
 Consulta [docs/estado-actual.md](docs/estado-actual.md) antes de operar y
 [docs/pendientes.md](docs/pendientes.md) antes de iniciar trabajo nuevo.

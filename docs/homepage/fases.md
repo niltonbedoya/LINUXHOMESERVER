@@ -189,20 +189,23 @@ cerrada y la Fase 5 puede iniciarse cuando se solicite.
 
 Documento: `fase-5a-monitorizacion-equipos.md`.
 
-### 5B — Nilton PC (implantación completada; G5B pendiente de confirmación)
+### 5B — Nilton PC (completada; G5B cerrada)
 
 - Agente Glances 4.5.6 instalado y validado con allowlist sin procesos.
 - Listener y firewall limitados a Tailscale/Mac mini; secreto fuera de Git.
 - Grupo `🖥 EQUIPOS` y tarjeta compacta Nilton PC desplegados.
 - Homepage healthy, proxy autenticado y regresión completa aprobados.
-- Pendiente: confirmación visual y prueba controlada de caída/recuperación.
+- El usuario confirmó la tarjeta. La caída controlada produjo `ECONNREFUSED` solo para
+  Nilton PC; Homepage siguió healthy y sin reinicios. La recuperación pasó tanto en
+  Windows como desde el proxy autenticado de Homepage.
 
 ### Fases siguientes
 
-- 5C: servidor DEV y patrón Linux.
-- 5D: Raspberry Pi actual, sin discos del futuro NAS.
+- 5C: servidor DEV y patrón Linux, completada; G5C cerrado. La caída aislada no afectó
+  Tickets ni Homepage y la recuperación pasó local/remota.
+- 5D: descartada. Raspberry Pi y su instalación desde cero pasan a un proyecto separado.
 - 5E: servidor PROD, último por criticidad.
-- 5F: integración completa de los cuatro nodos en `🖥 EQUIPOS`, pruebas conjuntas de
+- 5F: integración completa de los tres nodos de este proyecto en `🖥 EQUIPOS`, pruebas conjuntas de
   fallo aislado y refinamiento visual.
 
 Cada subfase tendrá una puerta y evidencia separada. No se monitorizará el teléfono ni

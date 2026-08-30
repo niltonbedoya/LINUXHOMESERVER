@@ -41,6 +41,20 @@
           chart: false
           refreshInterval: 5000
 
+    - Servidor DEV:
+        icon: mdi-server-#3b82f6
+        description: Ubuntu · métricas privadas por Tailscale
+        ping: tickets-server-dev.tailf553c4.ts.net
+        widget:
+          type: glances
+          url: http://tickets-server-dev.tailf553c4.ts.net:61208
+          username: "{{HOMEPAGE_VAR_DEV_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_DEV_GLANCES_PASSWORD}}"
+          version: 4
+          metric: info
+          chart: false
+          refreshInterval: 5000
+
 - 🚨 PRODUCCIÓN:
     - Servidor Ubuntu PROD:
         icon: mdi-server-#ef4444
