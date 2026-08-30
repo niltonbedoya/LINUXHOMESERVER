@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Valida que DEV sea exacto y permanezca separado de PRODUCCIÓN."""
+"""Valida que los accesos DEV retirados no reaparezcan en Homepage."""
 
 import json
 import sys
@@ -17,38 +17,31 @@ except (json.JSONDecodeError, TypeError) as exc:
 if not isinstance(groups, list):
     fail("/api/services no devolvió una lista")
 
-by_name = {group.get("name"): group for group in groups}
-required_groups = {"🏠 HOME SERVER", "🚨 PRODUCCIÓN", "🧪 DESARROLLO / DEV"}
+def flatten(items):
+    return {group.get("name"): group for group in items for group in [group] + list(flatten(group.get("groups", [])).values())}
+by_name = flatten(groups)
+required_groups = {"HOME SERVER"}
 if not required_groups.issubset(by_name):
-    fail(f"faltan grupos anteriores: {sorted(required_groups - set(by_name))}")
+    fail(f"faltan grupos requeridos: {sorted(required_groups - set(by_name))}")
 
-dev_services = {
-    service.get("name"): service
-    for service in by_name["🧪 DESARROLLO / DEV"]["services"]
-}
-expected_services = {"Servidor Ubuntu DEV", "Tickets DEV", "API DEV"}
-if set(dev_services) != expected_services:
-    fail(f"servicios DEV inesperados: {sorted(dev_services)}")
+if "🧪 DESARROLLO / DEV" in by_name:
+    fail("el grupo DESARROLLO / DEV ya no debe mostrarse")
 
 node = "tickets-server-dev.tailf553c4.ts.net"
-server = dev_services["Servidor Ubuntu DEV"]
-if server.get("ping") != node or server.get("href"):
-    fail("el servidor DEV no usa exclusivamente el MagicDNS verificado")
+home = {service.get("name"): service for service in by_name["HOME SERVER"]["services"]}
+dev_service = home.get("Servidor DEV", {})
+# Homepage oculta URL y credenciales en /api/services; el test estático comprueba
+# MagicDNS y este test runtime comprueba el widget publicado sin exponer secretos.
+if dev_service.get("widget"):
+    if dev_service["widget"].get("url") != f"http://{node}:61208":
+        fail("la tarjeta de métricas DEV no usa MagicDNS")
+else:
+    widgets = dev_service.get("widgets", [])
+    if len(widgets) != 1 or widgets[0].get("type") != "glances" or widgets[0].get("metric") != "info":
+        fail("la tarjeta de métricas DEV no publica el widget Glances compacto")
+serialized = json.dumps(groups, ensure_ascii=False)
+for forbidden in ("Servidor Ubuntu DEV", "Tickets DEV", "API DEV", f"http://{node}:5173", f"http://{node}:18000/docs"):
+    if forbidden in serialized:
+        fail(f"reapareció un acceso DEV retirado: {forbidden}")
 
-frontend_url = f"http://{node}:5173/"
-tickets = dev_services["Tickets DEV"]
-if tickets.get("href") != frontend_url or tickets.get("siteMonitor") != frontend_url:
-    fail("Tickets DEV no usa el frontend 5173 verificado")
-
-api = dev_services["API DEV"]
-if api.get("href") != f"http://{node}:18000/docs":
-    fail("API DEV no enlaza al Swagger verificado")
-if api.get("siteMonitor") != f"http://{node}:18000/health":
-    fail("API DEV no usa el healthcheck verificado")
-
-dev_serialized = json.dumps(dev_services, ensure_ascii=False).lower()
-for forbidden in ("service-ab-electronic.com", "servicio-tickets-definitivo", "100.113.199.93"):
-    if forbidden in dev_serialized:
-        fail(f"DEV reutiliza un destino PROD prohibido: {forbidden}")
-
-print("Configuración runtime de DESARROLLO: OK")
+print("Configuración runtime sin accesos DEV: OK")

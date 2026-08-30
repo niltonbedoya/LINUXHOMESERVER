@@ -80,3 +80,9 @@ MagicDNS 5173. Solo se reconstruyeron backend y frontend; PostgreSQL permaneció
 
 El usuario confirmó el 30 de agosto de 2026 que el flujo frontend→backend funciona tras
 la corrección. G3 queda aprobada. La Fase 4 requiere una nueva autorización explícita.
+
+## Cambio visual posterior
+
+Durante 5F el usuario retiró de Homepage las tarjetas de acceso DEV para reducir ruido
+en el uso diario. La VM, sus endpoints y su agente de métricas no se modificaron;
+`Servidor DEV` continúa apareciendo únicamente en `🖥 EQUIPOS`.

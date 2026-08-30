@@ -6,44 +6,20 @@ color: slate
 headerStyle: clean
 statusStyle: dot
 hideVersion: true
+fullWidth: true
+useEqualHeights: true
+background:
+  image: /images/storm-ab-background.png
+  opacity: 75
 
 layout:
-  🏠 HOME SERVER:
-    style: row
-    columns: 4
-
-  🖥 EQUIPOS:
-    style: row
-    columns: 4
-
-  🚨 PRODUCCIÓN:
-    style: row
-    columns: 2
-
-  🧪 DESARROLLO / DEV:
-    style: row
-    columns: 3
-
-  🧠 LLM Y CHAT IA:
-    style: row
-    columns: 4
-
-  🧑‍💻 IDE Y EDITORES:
-    style: row
-    columns: 3
-
-  🤖 AGENTES Y CLI:
-    style: row
-    columns: 3
-
-  ⌨️ TERMINALES Y SHELLS:
-    style: row
-    columns: 3
-
-  🧪 PLATAFORMAS IA:
-    style: row
-    columns: 2
-
-  🛠 ADMINISTRACIÓN:
-    style: row
-    columns: 3
+  IZQUIERDA:
+    header: false
+    HOME SERVER: {style: row, columns: 4}
+    IDE Y EDITORES: {style: row, columns: 4}
+  DERECHA:
+    header: false
+    LLM Y CHAT IA: {style: row, columns: 4}
+    AGENTES Y CLI: {style: row, columns: 4}
+    TERMINALES Y SHELLS: {style: row, columns: 4}
+    PLATAFORMAS IA: {style: row, columns: 4}

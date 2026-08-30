@@ -128,9 +128,14 @@ try:
 except Exception as error:  # noqa: BLE001 - mensaje operativo compacto
     fail(f"no se pudo leer /api/services: {error}")
 
-group = next((item for item in groups if item.get("name") == "🖥 EQUIPOS"), None)
+def find(items, name):
+    for item in items:
+        if item.get("name") == name: return item
+        found = find(item.get("groups", []), name)
+        if found: return found
+group = find(groups, "HOME SERVER")
 if group is None:
-    fail("Homepage no publicó el grupo EQUIPOS")
+    fail("Homepage no publicó el grupo HOME SERVER")
 services = [item for item in group.get("services", []) if item.get("name") == "Nilton PC"]
 if len(services) != 1:
     fail(f"Homepage publicó {len(services)} tarjetas Nilton PC")
@@ -139,7 +144,7 @@ if '"username"' in serialized_service or '"password"' in serialized_service:
     fail("la API pública de servicios conservó campos de credenciales")
 
 query = urllib.parse.urlencode(
-    {"group": "🖥 EQUIPOS", "service": "Nilton PC", "index": "0", "endpoint": "4/quicklook"}
+    {"group": "HOME SERVER", "service": "Nilton PC", "index": "0", "endpoint": "4/quicklook"}
 )
 try:
     with urllib.request.urlopen(

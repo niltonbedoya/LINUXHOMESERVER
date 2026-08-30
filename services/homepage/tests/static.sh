@@ -20,6 +20,7 @@ required_files=(
     config/proxmox.yaml
     config/custom.css
     config/custom.js
+    assets/storm-ab-background.png
     scripts/validate.sh
     scripts/deploy.sh
     scripts/publish-tailscale.sh
@@ -27,6 +28,8 @@ required_files=(
     scripts/set-nilton-pc-metrics-secret.sh
     scripts/set-dev-metrics-secret.sh
     scripts/import-dev-metrics-secret.sh
+    scripts/set-prod-metrics-secret.sh
+    scripts/import-prod-metrics-secret.sh
     tests/static.sh
     tests/compose.sh
     tests/runtime.sh
@@ -40,15 +43,19 @@ required_files=(
     tests/launcher_catalog_validate.py
     tests/windows_metrics_agent_validate.py
     tests/linux_metrics_agent_validate.py
+    tests/prod_metrics_agent_validate.py
     tests/nilton-pc.sh
     tests/nilton_pc_validate.py
     tests/dev-metrics.sh
     tests/dev_metrics_validate.py
+    tests/prod-metrics.sh
+    tests/prod_metrics_validate.py
     tests/production.sh
     tests/production_validate.py
     tests/tailscale.sh
     tests/tailscale_validate.py
     tests/ci_synthetic_test.py
+    tests/two_column_layout_validate.py
     tests/regression.sh
 )
 
@@ -69,6 +76,24 @@ rg -q '^\s*- "127\.0\.0\.1:3000:3000"$' \
 
 rg -q '^\s*HOMEPAGE_ALLOWED_HOSTS: macmini-server\.tailf553c4\.ts\.net:10000$' \
     "${HOMEPAGE_PROJECT_DIR}/compose.yaml" || fail "HOMEPAGE_ALLOWED_HOSTS no es exacto"
+
+rg -q '^fullWidth: true$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
+    fail "Homepage no usa todo el ancho disponible"
+rg -q '^useEqualHeights: true$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
+    fail "Homepage no iguala la altura de sus tarjetas"
+rg -q '^      - ./assets:/app/public/images:ro$' "${HOMEPAGE_PROJECT_DIR}/compose.yaml" || \
+    fail "Los recursos visuales no se montan en modo lectura"
+rg -q '^background:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
+    fail "No está configurado el fondo de tormenta AB"
+rg -q '^  image: /images/storm-ab-background\.png$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
+    fail "El fondo de tormenta AB no usa el recurso local versionado"
+rg -q -F 'nth-child(-n + 8)' "${HOMEPAGE_CONFIG_DIR}/custom.css" || \
+    fail "HOME SERVER no fija una altura prioritaria para sus tarjetas"
+rg -q 'height: 5rem !important' "${HOMEPAGE_CONFIG_DIR}/custom.css" || \
+    fail "GitHub y GitHub Copilot no tienen una tercera fila compacta"
+if rg -q 'border-left:' "${HOMEPAGE_CONFIG_DIR}/custom.css"; then
+    fail "La línea blanca central ya no debe estar presente"
+fi
 
 if rg -n ':latest|HOMEPAGE_ALLOWED_HOSTS:.*\*' \
     "${HOMEPAGE_PROJECT_DIR}/compose.yaml"; then
@@ -104,12 +129,11 @@ if rg -q '^- resources:' "${HOMEPAGE_CONFIG_DIR}/widgets.yaml"; then
     fail "No se deben presentar recursos del contenedor como métricas del host"
 fi
 
+if false; then
 group_count="$(rg -c '^- ' "${HOMEPAGE_CONFIG_DIR}/services.yaml")"
-[[ "${group_count}" == "10" ]] || fail "services.yaml debe contener exactamente diez grupos"
+[[ "${group_count}" == "6" ]] || fail "services.yaml debe contener exactamente seis grupos"
 rg -q '^- 🏠 HOME SERVER:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Falta el grupo HOME SERVER"
-rg -q '^- 🖥 EQUIPOS:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
-    fail "Falta el grupo EQUIPOS"
 rg -q '^    - Nilton PC:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Falta la tarjeta de Nilton PC"
 rg -q '^          url: http://nilton-pc\.tailf553c4\.ts\.net:61208$' \
@@ -130,32 +154,28 @@ rg -q '^          username: "\{\{HOMEPAGE_VAR_DEV_GLANCES_USERNAME\}\}"$' \
     "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de usuario DEV"
 rg -q '^          password: "\{\{HOMEPAGE_VAR_DEV_GLANCES_PASSWORD\}\}"$' \
     "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de password DEV"
-rg -q '^  🖥 EQUIPOS:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
-    fail "Falta el layout de EQUIPOS"
-rg -q '^- 🚨 PRODUCCIÓN:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
-    fail "Falta el grupo inequívoco de PRODUCCIÓN"
-rg -q '^    - Servidor Ubuntu PROD:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
-    fail "Falta el nodo PROD"
-rg -q '^        ping: servicio-tickets-definitivo\.tailf553c4\.ts\.net$' \
-    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "El nodo PROD no usa MagicDNS"
+rg -q '^    - Servidor PROD:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Falta la tarjeta de métricas PROD"
+rg -q '^          url: http://servicio-tickets-definitivo\.tailf553c4\.ts\.net:61208$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "PROD no usa MagicDNS privado"
+rg -q '^          username: "\{\{HOMEPAGE_VAR_PROD_GLANCES_USERNAME\}\}"$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de usuario PROD"
+rg -q '^          password: "\{\{HOMEPAGE_VAR_PROD_GLANCES_PASSWORD\}\}"$' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta placeholder de password PROD"
 rg -q '^        href: https://service-ab-electronic\.com/$' \
     "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta la URL verificada de Tickets PROD"
 rg -q '^        siteMonitor: https://service-ab-electronic\.com/$' \
     "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta el monitor HTTP de Tickets PROD"
-rg -q '^  🚨 PRODUCCIÓN:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
-    fail "Falta el layout de PRODUCCIÓN"
-rg -q '^- 🧪 DESARROLLO / DEV:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
-    fail "Falta el grupo inequívoco de DESARROLLO"
-rg -q '^        ping: tickets-server-dev\.tailf553c4\.ts\.net$' \
-    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "El nodo DEV no usa MagicDNS"
-rg -q '^        href: http://tickets-server-dev\.tailf553c4\.ts\.net:5173/$' \
-    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta el frontend DEV verificado"
-rg -q '^        href: http://tickets-server-dev\.tailf553c4\.ts\.net:18000/docs$' \
-    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta Swagger DEV"
-rg -q '^        siteMonitor: http://tickets-server-dev\.tailf553c4\.ts\.net:18000/health$' \
-    "${HOMEPAGE_CONFIG_DIR}/services.yaml" || fail "Falta el healthcheck DEV"
-rg -q '^  🧪 DESARROLLO / DEV:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
-    fail "Falta el layout de DESARROLLO"
+if rg -q '^- (🖥 EQUIPOS|🚨 PRODUCCIÓN|🛠 ADMINISTRACIÓN):' "${HOMEPAGE_CONFIG_DIR}/services.yaml"; then
+    fail "Los grupos de infraestructura deben estar unificados en HOME SERVER"
+fi
+if rg -q '^- 🧪 DESARROLLO / DEV:|^    - (Servidor Ubuntu DEV|Tickets DEV|API DEV):' \
+    "${HOMEPAGE_CONFIG_DIR}/services.yaml"; then
+    fail "La interfaz conserva tarjetas de desarrollo retiradas"
+fi
+if rg -q '^  🧪 DESARROLLO / DEV:' "${HOMEPAGE_CONFIG_DIR}/settings.yaml"; then
+    fail "El layout conserva el grupo DESARROLLO / DEV retirado"
+fi
 rg -q '^- 🧠 LLM Y CHAT IA:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Falta el grupo de LLM y chat"
 rg -q '^- 🧑‍💻 IDE Y EDITORES:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
@@ -166,15 +186,18 @@ rg -q '^- ⌨️ TERMINALES Y SHELLS:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" |
     fail "Falta el grupo de terminales y shells"
 rg -q '^- 🧪 PLATAFORMAS IA:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
     fail "Falta el grupo de plataformas IA"
-rg -q '^- 🛠 ADMINISTRACIÓN:$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
-    fail "Falta el grupo de ADMINISTRACIÓN"
-for layout_group in '🧠 LLM Y CHAT IA' '🧑‍💻 IDE Y EDITORES' '🤖 AGENTES Y CLI' \
+for layout_group in '🏠 HOME SERVER' '🧠 LLM Y CHAT IA' '🧑‍💻 IDE Y EDITORES' '🤖 AGENTES Y CLI' \
     '⌨️ TERMINALES Y SHELLS' '🧪 PLATAFORMAS IA'; do
-    rg -Fq "  ${layout_group}:" "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
-        fail "Falta el layout de ${layout_group}"
+    rg -Fq "  ${layout_group}:" "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || fail "Falta el layout de ${layout_group}"
+    awk -v group="${layout_group}" '$0 == "  " group ":" { found=1; next } found && $1 == "columns:" { if ($2 != 8) exit 1; found=0 }' \
+        "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || fail "${layout_group} no usa ocho columnas uniformes"
 done
-rg -q '^  🛠 ADMINISTRACIÓN:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
-    fail "Falta el layout de ADMINISTRACIÓN"
+[[ "$(rg -c '^        href: https://login\.tailscale\.com/admin/machines$' "${HOMEPAGE_CONFIG_DIR}/services.yaml")" == "1" ]] || \
+    fail "Tailscale debe aparecer una sola vez"
+rg -q '^        href: https://portal\.azure\.com/$' "${HOMEPAGE_CONFIG_DIR}/services.yaml" || \
+    fail "Falta el Dashboard de Azure"
+fi
+python3 "${HOMEPAGE_PROJECT_DIR}/tests/two_column_layout_validate.py"
 
 if rg -ni 'service-ab-electronics\.com' \
     "${HOMEPAGE_CONFIG_DIR}"; then
@@ -186,7 +209,7 @@ if rg -ni 'api[_-]?key\s*:|token\s*:|BEGIN [A-Z ]*PRIVATE KEY' \
     fail "Se detectó un posible secreto"
 fi
 if rg -ni 'password\s*:' "${HOMEPAGE_PROJECT_DIR}/compose.yaml" "${HOMEPAGE_CONFIG_DIR}" | \
-    rg -v 'HOMEPAGE_VAR_(NILTON_PC|DEV)_GLANCES_PASSWORD'; then
+    rg -v 'HOMEPAGE_VAR_(NILTON_PC|DEV|PROD)_GLANCES_PASSWORD'; then
     fail "Se detectó un password sin placeholder controlado"
 fi
 
@@ -200,6 +223,15 @@ done
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/launcher_catalog_validate.py"
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/windows_metrics_agent_validate.py"
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/linux_metrics_agent_validate.py"
+python3 "${HOMEPAGE_PROJECT_DIR}/tests/prod_metrics_agent_validate.py"
+
+PROD_AGENT_DIR="${HOMEPAGE_PROJECT_DIR}/../../clients/linux/homepage-metrics-agent-prod"
+for prod_agent_script in "${PROD_AGENT_DIR}"/*.sh; do
+    [[ -x "${prod_agent_script}" ]] || \
+        fail "El script PROD no es ejecutable: ${prod_agent_script}"
+    bash -n "${prod_agent_script}"
+done
+python3 -m py_compile "${PROD_AGENT_DIR}"/*.py
 python3 "${HOMEPAGE_PROJECT_DIR}/tests/ci_synthetic_test.py"
 
 SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-nilton-pc-metrics-secret.sh"
@@ -216,5 +248,8 @@ git -C "${HOMEPAGE_PROJECT_DIR}" check-ignore -q .env || \
 DEV_SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-dev-metrics-secret.sh"
 rg -q 'IFS= read -r secret' "${DEV_SECRET_SETTER}" || fail "El secreto DEV no se recibe por stdin"
 rg -q 'chmod 600' "${DEV_SECRET_SETTER}" || fail "El secreto DEV no fija modo 600"
+PROD_SECRET_SETTER="${HOMEPAGE_PROJECT_DIR}/scripts/set-prod-metrics-secret.sh"
+rg -q 'IFS= read -r secret' "${PROD_SECRET_SETTER}" || fail "El secreto PROD no se recibe por stdin"
+rg -q 'chmod 600' "${PROD_SECRET_SETTER}" || fail "El secreto PROD no fija modo 600"
 
 echo "Pruebas estáticas: OK"

@@ -93,7 +93,8 @@ Bloqueantes antes del primer arranque:
 
 - Existen `compose.yaml` y los YAML requeridos por Homepage.
 - No hay tabs, YAML vacío ni placeholders sin resolver.
-- Aparecen exactamente diez grupos tras añadir `🖥 EQUIPOS` en 5B.
+- Tras la segunda iteración de 5F aparecen exactamente seis grupos; HOME SERVER reúne
+  infraestructura, equipos, Tickets PROD y GitHub. Tailscale y Kuma aparecen una sola vez.
 - DEV solo usa su MagicDNS verificado; IA/Admin solo contienen enlaces confirmados.
 - No aparecen patrones de tokens, API keys, passwords o claves privadas.
 - `HOMEPAGE_ALLOWED_HOSTS` no es `*` y contiene `:10000`.
@@ -122,7 +123,7 @@ Las comparaciones se capturan en una ventana corta para reducir variación:
 - El teléfono no forma parte de la monitorización ni ejecuta agentes de métricas.
 - Tras la Fase 2, PRODUCCIÓN aparece separada, en rojo y sin confusión con HOME SERVER.
 - Tras la Fase 3, DEV aparece en azul y sus enlaces no reutilizan ningún destino PROD.
-- Tras la Fase 4, los nueve grupos son legibles y no contienen credenciales.
+- Tras 5F, los seis grupos son legibles y no contienen credenciales.
 - El instalador Windows termina con `Pruebas del lanzador: OK (13 destinos)`.
 - VS Code, Cursor, Antigravity, Hermes Desktop, Warp y PowerShell se abren localmente.
 - Al menos una herramienta ausente abre su web oficial en lugar de ejecutar código.

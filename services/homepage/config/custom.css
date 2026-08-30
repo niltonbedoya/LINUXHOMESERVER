@@ -1,2 +1,32 @@
-/* Personalizaciones visuales futuras. Mantener vacío durante la Fase 1A. */
+/* HOME SERVER: equipos y servicios prioritarios comparten una altura alta. */
+@media (min-width: 768px) {
+  #layout-groups > .services-group:first-child .subgroup:first-of-type .services-list > .service:nth-child(-n + 8) > .service-card {
+    min-height: 10rem;
+  }
+}
 
+/* Los accesos pertenecen a HOME SERVER, pero no requieren la altura de las métricas. */
+@media (min-width: 768px) {
+  #github,
+  #github-copilot {
+    grid-column: span 2 / span 2;
+  }
+
+  #github > .service-card,
+  #github-copilot > .service-card {
+    height: 5rem !important;
+    min-height: 5rem;
+  }
+}
+
+/* El logotipo forma parte del fondo; las tarjetas siempre permanecen por delante. */
+#layout-groups .service-card {
+  background-color: rgb(15 23 42 / 0.62) !important;
+}
+
+/* Se oculta solo el porcentaje de swap, que ocupa el encabezado de las tarjetas Glances. */
+#nilton-pc .service-container > .absolute.top-3.right-2,
+#servidor-dev .service-container > .absolute.top-3.right-2,
+#servidor-prod .service-container > .absolute.top-3.right-2 {
+  display: none;
+}

@@ -17,24 +17,17 @@ except (json.JSONDecodeError, TypeError) as exc:
 if not isinstance(groups, list):
     fail("/api/services no devolvió una lista")
 
-by_name = {group.get("name"): group for group in groups}
+def flatten(items):
+    return {group.get("name"): group for group in items for group in [group] + list(flatten(group.get("groups", [])).values())}
+by_name = flatten(groups)
 expected_groups = {
-    "🏠 HOME SERVER",
-    "🖥 EQUIPOS",
-    "🚨 PRODUCCIÓN",
-    "🧪 DESARROLLO / DEV",
-    "🧠 LLM Y CHAT IA",
-    "🧑‍💻 IDE Y EDITORES",
-    "🤖 AGENTES Y CLI",
-    "⌨️ TERMINALES Y SHELLS",
-    "🧪 PLATAFORMAS IA",
-    "🛠 ADMINISTRACIÓN",
+    "IZQUIERDA", "DERECHA", "HOME SERVER", "LLM Y CHAT IA", "IDE Y EDITORES", "AGENTES Y CLI", "TERMINALES Y SHELLS", "PLATAFORMAS IA",
 }
 if set(by_name) != expected_groups:
     fail(f"grupos inesperados: {sorted(by_name)}")
 
 expected_links = {
-    "🧠 LLM Y CHAT IA": {
+    "LLM Y CHAT IA": {
         "ChatGPT": "https://chatgpt.com/",
         "Gemini": "https://gemini.google.com/",
         "Claude": "https://claude.ai/",
@@ -43,7 +36,7 @@ expected_links = {
         "Microsoft Copilot": "https://copilot.microsoft.com/",
         "Mistral Vibe": "https://chat.mistral.ai/",
     },
-    "🧑‍💻 IDE Y EDITORES": {
+    "IDE Y EDITORES": {
         "Visual Studio Code": "homeserver-launch://vscode",
         "Cursor": "homeserver-launch://cursor",
         "Antigravity": "homeserver-launch://antigravity",
@@ -51,26 +44,21 @@ expected_links = {
         "Visual Studio Community": "homeserver-launch://visual-studio",
         "JetBrains IDEs": "homeserver-launch://jetbrains",
     },
-    "🤖 AGENTES Y CLI": {
+    "AGENTES Y CLI": {
         "Hermes Desktop": "homeserver-launch://hermes",
         "Codex CLI": "homeserver-launch://codex",
         "OpenCode": "homeserver-launch://opencode",
         "Aider": "homeserver-launch://aider",
-        "GitHub Copilot": "https://github.com/copilot",
     },
-    "⌨️ TERMINALES Y SHELLS": {
+    "TERMINALES Y SHELLS": {
         "Warp": "homeserver-launch://warp",
         "PowerShell": "homeserver-launch://powershell",
         "WSL": "homeserver-launch://wsl",
     },
-    "🧪 PLATAFORMAS IA": {
+    "PLATAFORMAS IA": {
         "Google AI Studio": "https://aistudio.google.com/",
         "NVIDIA Build": "https://build.nvidia.com/",
-    },
-    "🛠 ADMINISTRACIÓN": {
-        "Tailscale Admin": "https://login.tailscale.com/admin/machines",
-        "Uptime Kuma Admin": "http://100.72.206.57:3001/",
-        "GitHub": "https://github.com/",
+        "Azure Dashboard": "https://portal.azure.com/",
     },
 }
 
@@ -94,6 +82,17 @@ for group_name, expected in expected_links.items():
             )
         if service.get("widgets"):
             fail(f"{name} contiene widgets no autorizados")
+
+home_services = {
+    service.get("name"): service for service in by_name["HOME SERVER"]["services"]
+}
+for name, expected_url, expected_id in (
+    ("GitHub", "https://github.com/", "github"),
+    ("GitHub Copilot", "https://github.com/copilot", "github-copilot"),
+):
+    service = home_services.get(name)
+    if service is None or service.get("href") != expected_url or service.get("id") != expected_id:
+        fail(f"{name} no está correctamente integrado en HOME SERVER")
 
 serialized = json.dumps(
     [by_name[group_name] for group_name in expected_links], ensure_ascii=False

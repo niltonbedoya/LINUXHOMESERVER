@@ -77,8 +77,9 @@ El contexto histórico indica que el administrador inicial ya fue creado.
 - Estado Docker: proxy v0.5.0 en red interna, GET/HEAD de contenedores y `POST=0`.
 - Métricas: Glances 4.5.6 en otra red interna, sin puertos ni socket Docker.
 - Métricas verificadas: CPU, RAM, disco, uptime y temperatura CPU `Package id`.
-- Grupos: HOME SERVER, EQUIPOS, PRODUCCIÓN, DESARROLLO / DEV, LLM Y CHAT IA, IDE Y
-  EDITORES, AGENTES Y CLI, TERMINALES Y SHELLS, PLATAFORMAS IA y ADMINISTRACIÓN.
+- Grupos: HOME SERVER, LLM Y CHAT IA, IDE Y EDITORES, AGENTES Y CLI, TERMINALES Y SHELLS
+  y PLATAFORMAS IA. HOME SERVER reúne servicios, administración, métricas y Tickets PROD;
+  los accesos DEV se retiraron de la interfaz, pero sus métricas permanecen disponibles.
 
 ### Métricas remotas previstas
 
@@ -89,9 +90,9 @@ escucha únicamente en su IP Tailscale `100.105.88.14:61208`, autentica las mét
 limita el firewall al Mac mini. Su allowlist excluye procesos y programas. Homepage lo
 consulta por MagicDNS y recibe las credenciales desde un `.env` local ignorado por Git.
 
-DEV aplica ya el patrón Linux: Glances 4.5.6 en venv, usuario de sistema, unidades
-systemd y cadena `iptables` exclusiva que solo permite el Mac mini por `tailscale0`.
-PROD es el único nodo remoto pendiente en este proyecto.
+DEV y PROD aplican ya el patrón Linux: Glances 4.5.6 en venv, usuario de sistema,
+unidades systemd y cadena `iptables` exclusiva que solo permite el Mac mini por
+`tailscale0`.
 
 El teléfono no forma parte del sistema de métricas. La Raspberry Pi, su instalación desde
 cero y el futuro NAS se gestionarán en otro proyecto.

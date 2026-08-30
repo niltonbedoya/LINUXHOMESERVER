@@ -27,17 +27,16 @@ class CISyntheticTests(unittest.TestCase):
         with open(services_yaml_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)
 
-        self.api_services = []
-        for group_entry in data:
-            for group_name, services_list in group_entry.items():
-                parsed_services = []
-                for srv_entry in services_list:
-                    for srv_name, srv_props in srv_entry.items():
-                        srv_dict = {"name": srv_name}
-                        if isinstance(srv_props, dict):
-                            srv_dict.update(srv_props)
-                        parsed_services.append(srv_dict)
-                self.api_services.append({"name": group_name, "services": parsed_services})
+        def group(name, entries):
+            services, groups = [], []
+            for entry in entries:
+                for child_name, props in entry.items():
+                    if isinstance(props, list):
+                        groups.append(group(child_name, props))
+                    else:
+                        service = {"name": child_name}; service.update(props); services.append(service)
+            return {"name": name, "services": services, "groups": groups}
+        self.api_services = [group(name, entries) for item in data for name, entries in item.items()]
 
         self.valid_services_payload = json.dumps(self.api_services, ensure_ascii=False)
 
@@ -80,27 +79,24 @@ class CISyntheticTests(unittest.TestCase):
     def test_production_validate_failure_on_bad_domain(self) -> None:
         # Inject incorrect domain into PROD
         corrupted = json.loads(self.valid_services_payload)
-        for group in corrupted:
-            if group.get("name") == "🚨 PRODUCCIÓN":
+        def corrupt(groups):
+            for group in groups:
                 for srv in group.get("services", []):
-                    if srv.get("name") == "Tickets PROD":
-                        srv["href"] = "https://service-ab-electronics.com/"
+                    if srv.get("name") == "Tickets PROD": srv["href"] = "https://service-ab-electronics.com/"
+                corrupt(group.get("groups", []))
+        corrupt(corrupted)
         proc = self.run_script("production_validate.py", stdin_data=json.dumps(corrupted))
         self.assertNotEqual(proc.returncode, 0)
 
-    def test_development_validate_success(self) -> None:
+    def test_development_accesses_are_absent(self) -> None:
         proc = self.run_script("development_validate.py", stdin_data=self.valid_services_payload)
         self.assertEqual(proc.returncode, 0, f"Error in development_validate: {proc.stderr}")
-        self.assertIn("Configuración runtime de DESARROLLO: OK", proc.stdout)
+        self.assertIn("Configuración runtime sin accesos DEV: OK", proc.stdout)
 
-    def test_development_validate_failure_on_prod_leak(self) -> None:
-        # Inject PROD leak into DEV
+    def test_development_validate_failure_when_dev_reappears(self) -> None:
+        # Reintroduce an access card removed by the user.
         corrupted = json.loads(self.valid_services_payload)
-        for group in corrupted:
-            if group.get("name") == "🧪 DESARROLLO / DEV":
-                for srv in group.get("services", []):
-                    if srv.get("name") == "Tickets DEV":
-                        srv["href"] = "https://service-ab-electronic.com/"
+        corrupted.append({"name": "🧪 DESARROLLO / DEV", "services": []})
         proc = self.run_script("development_validate.py", stdin_data=json.dumps(corrupted))
         self.assertNotEqual(proc.returncode, 0)
 
@@ -144,4 +140,3 @@ class CISyntheticTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
-

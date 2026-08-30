@@ -204,9 +204,12 @@ Documento: `fase-5a-monitorizacion-equipos.md`.
 - 5C: servidor DEV y patrón Linux, completada; G5C cerrado. La caída aislada no afectó
   Tickets ni Homepage y la recuperación pasó local/remota.
 - 5D: descartada. Raspberry Pi y su instalación desde cero pasan a un proyecto separado.
-- 5E: servidor PROD, último por criticidad.
-- 5F: integración completa de los tres nodos de este proyecto en `🖥 EQUIPOS`, pruebas conjuntas de
-  fallo aislado y refinamiento visual.
+- 5E: servidor PROD, completada; G5E cerrado. La caída aislada no afectó Tickets,
+  Homepage, n8n ni Kuma; la recuperación, regresiones y confirmación visual pasaron.
+- 5F: en curso. Los tres nodos están integrados en `🏠 HOME SERVER`, que también reúne
+  administración y Tickets PROD. La segunda iteración usa seis grupos y ocho columnas
+  uniformes; la tercera habilitó ancho total y alturas iguales. Quedan revisión visual y
+  futuros refinamientos solicitados por el usuario.
 
 Cada subfase tendrá una puerta y evidencia separada. No se monitorizará el teléfono ni
 se desarrollará una APK/PWA específica para recopilar sus métricas.

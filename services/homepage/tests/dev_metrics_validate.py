@@ -70,13 +70,18 @@ if payload["forbidden"] != {"processcount": 400, "processlist": 400, "programlis
 
 with urllib.request.urlopen("http://127.0.0.1:3000/api/services", timeout=10) as response:
     groups = json.load(response)
-group = next((entry for entry in groups if entry.get("name") == "🖥 EQUIPOS"), None)
+def find(items, name):
+    for item in items:
+        if item.get("name") == name: return item
+        found = find(item.get("groups", []), name)
+        if found: return found
+group = find(groups, "HOME SERVER")
 services = [] if group is None else [entry for entry in group.get("services", []) if entry.get("name") == "Servidor DEV"]
 if len(services) != 1:
     fail("Homepage no publicó exactamente una tarjeta DEV")
 if '"username"' in json.dumps(services[0]).lower() or '"password"' in json.dumps(services[0]).lower():
     fail("la API pública expone campos de credenciales DEV")
-query = urllib.parse.urlencode({"group": "🖥 EQUIPOS", "service": "Servidor DEV", "index": "1", "endpoint": "4/quicklook"})
+query = urllib.parse.urlencode({"group": "HOME SERVER", "service": "Servidor DEV", "index": "0", "endpoint": "4/quicklook"})
 with urllib.request.urlopen(f"http://127.0.0.1:3000/api/services/proxy?{query}", timeout=10) as response:
     proxied = json.load(response)
 if not 0 <= float(proxied["cpu"]) <= 100 or not 0 <= float(proxied["mem"]) <= 100:

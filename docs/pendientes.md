@@ -15,8 +15,8 @@
 
 ## Media prioridad
 
-- Continuar métricas por la puerta independiente de PROD y finalmente integración/diseño.
-  PROD debe ser el último equipo modificado.
+- Confirmar visualmente los indicadores verdes restaurados de Nilton PC, DEV y PROD y
+  cerrar definitivamente la Fase 5F de Homepage.
 - Volver a probar los modelos NVIDIA desde n8n ahora que HOST y WEBHOOK están corregidos.
 - Revisar con calma los avisos de deprecación mostrados por n8n 2.36.8 sobre paquetes no
   verificados, timeout de runners y límites de descompresión. No fijar valores sin decidir

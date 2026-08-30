@@ -21,6 +21,10 @@ Orden de lectura:
    diseño seguro, métricas, fases y pruebas para PC y servidores.
 10. [fase-5b-nilton-pc.md](fase-5b-nilton-pc.md): descubrimiento, despliegue y evidencia
     del primer agente Windows.
+11. [fase-5c-dev.md](fase-5c-dev.md): agente Linux aislado y validación en DEV.
+12. [fase-5e-prod.md](fase-5e-prod.md): inventario y puerta de control para PROD.
+13. [fase-5f-integracion-diseno.md](fase-5f-integracion-diseno.md): limpieza visual e
+    integración final de los tres equipos.
 
-El teléfono está excluido de la monitorización por decisión del usuario. La integración
-remota comenzará por Nilton PC en 5B y dejará PROD para el final.
+El teléfono y la Raspberry Pi están excluidos de la monitorización en este repositorio.
+Nilton PC y DEV ya están integrados; PROD permanece como último despliegue pendiente.

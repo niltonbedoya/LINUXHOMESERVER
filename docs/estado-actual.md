@@ -19,7 +19,7 @@ histórico. Los valores dinámicos deben volver a comprobarse antes de tomar dec
 | Bot Telegram | crontab `@reboot` ejecuta `telegram_bot_loop.sh` |
 | Comando `/servidor` | funcionamiento correcto confirmado por el usuario |
 | Docker para `bedvil` | acceso confirmado fuera del sandbox; usuario en grupo `docker` |
-| Homepage | v2.1.2 healthy; HTTPS privado activo en `https://macmini-server.tailf553c4.ts.net:10000/`; diez grupos configurados, incluido Nilton PC |
+| Homepage | v2.1.2 healthy; HTTPS privado activo en `https://macmini-server.tailf553c4.ts.net:10000/`; seis grupos configurados, incluidas métricas de Nilton PC, DEV y PROD |
 
 El lanzador observado es:
 
@@ -142,3 +142,76 @@ con acceso apropiado.
 - La Raspberry Pi se retiró de la Fase 5: será un proyecto independiente de instalación
   desde cero y no recibirá agente ni tarjeta Homepage en este alcance. PROD queda como
   único nodo remoto pendiente.
+- La puerta inicial de 5E verificó PROD desde su consola: usuario `ab`, host
+  `tickets-utuntu-01`, Ubuntu 26.04, Python 3.14.4 y Tailscale `100.113.199.93`.
+  No existe Glances ni listener 61208. Su firewall efectivo es iptables; UFW está
+  inactivo. La huella SSH ED25519 verificada es
+  `SHA256:3XF/dKeixLAE47KKDbjKb2mWFP5ndyL+GAxzlqHHkGM`. Aún falta autorizar la clave
+  pública del Mac mini para `ab`; no se ha modificado PROD.
+- El primer intento de instalación 5E se detuvo de forma segura antes de desplegar el
+  agente: falta el paquete oficial `python3.14-venv` (y por tanto `ensurepip`) en PROD.
+  No quedaron rutas, unidades, listener 61208 ni reglas iptables del agente; el siguiente
+  paso es instalar esa dependencia y repetir la puerta.
+- Tras instalar `python3.14-venv`, 5E desplegó Glances 4.5.6 aislado en PROD. Los
+  servicios y el listener `100.113.199.93:61208` están activos; la cadena iptables
+  permite únicamente al Mac mini por Tailscale. Homepage fue recreado de forma exclusiva
+  y su tarjeta `Servidor PROD` pasó autenticación, métricas, privacidad y widget. Todas
+  las regresiones pasaron.
+- La caída controlada de 5E detuvo solo el agente PROD: 61208 devolvió `ECONNREFUSED`,
+  mientras los contenedores Tickets, Homepage, n8n y Kuma siguieron sanos. Tras la
+  recuperación, las pruebas local/remota y la tarjeta visual volvieron a pasar. G5E está
+  cerrado; quedan las tareas de integración y diseño 5F.
+- La primera limpieza de 5F retiró las tarjetas redundantes de servidor en PRODUCCIÓN y
+  DESARROLLO / DEV, los enlaces de Tickets/API DEV y el Tailscale duplicado de
+  Administración. `EQUIPOS` conserva las tres tarjetas de métricas. Homepage volvió a
+  pasar la batería completa con nueve grupos.
+- La segunda iteración de 5F fusionó HOME SERVER, EQUIPOS, PRODUCCIÓN y ADMINISTRACIÓN
+  en `🏠 HOME SERVER`, con seis grupos visibles y ocho columnas uniformes. Se añadió Azure
+  Dashboard y las descripciones pasaron a una palabra. Homepage sigue healthy y todas las
+  pruebas pasan; falta la revisión visual solicitada por el usuario.
+- La tercera iteración de 5F activó `fullWidth` y alturas de tarjeta iguales, conservando
+  ocho columnas (cuatro por cada mitad lógica de pantalla). Se creó backup recuperable
+  previo y Homepage volvió a pasar el smoke test completo sin reinicios.
+- La cuarta iteración de 5F usa dos columnas nativas de grupos anidados y cuatro tarjetas
+  por fila en cada sección. Los puntos `ping` se retiraron de las tarjetas Glances para
+  evitar solapamientos; runtime y métricas remotas siguen correctos.
+- La quinta iteración de 5F incorpora el fondo elegido de tormenta AB: rayo vertical
+  divisor, logotipo AB con color en la esquina superior derecha y marca de agua azul
+  tenue. HOME SERVER prioriza equipos en su primera fila, servicios en la segunda y
+  agrupa GitHub y GitHub Copilot en dos tarjetas destacadas; la copia previa está en
+  `services/homepage/backups/20260830-fase-5f-storm-ab-background/`. La validación
+  estática, Compose, recurso visual, herramientas, interfaz sin accesos DEV, producción,
+  runtime y las métricas privadas de Nilton, DEV y PROD pasaron; Homepage quedó healthy y
+  sin reinicios.
+- La sexta iteración de 5F corrige dos defectos visuales: HOME SERVER fija `10rem` como
+  altura mínima de sus tarjetas en escritorio y el fondo tormenta AB se declara mediante
+  la opción nativa `background.image` de Homepage (opacidad 35), no mediante `body`.
+  La regeneración interna confirmó la configuración activa; la copia previa está en
+  `services/homepage/backups/20260830-fase-5f-background-height-fix/`.
+- La séptima iteración de 5F compacta GitHub y GitHub Copilot a `5rem`, retira el borde
+  blanco central, hace opacas las tarjetas para que el logo AB quede detrás y oculta solo
+  el indicador swap de Glances que se cruzaba con sus títulos. La opacidad del fondo es
+  ahora 20 para recuperar el color del logo; la copia previa está en
+  `services/homepage/backups/20260830-fase-5f-polish-card-layers/`. Todas las pruebas
+  relevantes volvieron a pasar.
+- La octava iteración de 5F recupera el efecto de cristal: se verificó en el código de
+  Homepage que `background.opacity` es inverso al velo oscuro, y se fijó en 75 (velo 25 %)
+  junto con tarjetas al 35 %. La copia previa está en
+  `services/homepage/backups/20260830-fase-5f-opacity-semantics-fix/`; Homepage fue
+  regenerado y las validaciones estática y runtime pasaron.
+- La novena iteración de 5F mantiene el fondo vivo y sube solo la opacidad de las
+  tarjetas al 48 %, para recuperar contraste. `custom.css` se verificó por la API sin
+  reiniciar Homepage; la copia previa está en
+  `services/homepage/backups/20260830-fase-5f-card-opacity-48/`.
+- La décima iteración de 5F fija las tarjetas al 62 % de opacidad por decisión visual del
+  usuario. La copia previa está en
+  `services/homepage/backups/20260830-fase-5f-card-opacity-62/`; la validación estática
+  pasó y Homepage continúa healthy.
+- El usuario aprobó la apariencia final de Homepage. La Fase 5F (métricas privadas e
+  integración/diseño final de Nilton PC, DEV y PROD) queda cerrada; se mantienen las
+  copias recuperables de cada iteración visual.
+- Tras esa aprobación se restauraron los `ping` privados por MagicDNS de Nilton PC, DEV y
+  PROD para devolver sus puntos verdes de estado. Los tres ICMP y widgets de métricas
+  pasaron; Homepage continúa healthy. Falta confirmar la visualización sin solapamientos
+  antes del cierre definitivo de 5F. La copia previa está en
+  `services/homepage/backups/20260830-fase-5f-restore-equipment-status-dots/`.
