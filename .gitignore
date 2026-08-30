@@ -1,0 +1,30 @@
+# Contexto histórico archivado y pendiente de borrado manual
+TODELETE/
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials/
+secrets/
+
+# Datos y copias operativas
+*.bak
+*.backup
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+
+# Cachés de herramientas
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+

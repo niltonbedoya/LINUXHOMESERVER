@@ -1,0 +1,57 @@
+name: homepage
+
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v2.1.2
+    container_name: homepage
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: macmini-server.tailf553c4.ts.net:10000
+      HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME: ${HOMEPAGE_VAR_NILTON_PC_GLANCES_USERNAME:?falta usuario Glances de Nilton PC}
+      HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD: ${HOMEPAGE_VAR_NILTON_PC_GLANCES_PASSWORD:?falta password Glances de Nilton PC}
+      TZ: Europe/Madrid
+    volumes:
+      - ./config:/app/config
+    networks:
+      - default
+      - docker_api
+      - metrics_api
+
+  dockerproxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:v0.5.0
+    container_name: homepage-dockerproxy
+    restart: unless-stopped
+    environment:
+      CONTAINERS: "1"
+      POST: "0"
+      LOG_LEVEL: warning
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - docker_api
+    security_opt:
+      - no-new-privileges:true
+
+  glances:
+    image: nicolargo/glances:4.5.6-full
+    container_name: homepage-glances
+    restart: unless-stopped
+    pid: host
+    environment:
+      GLANCES_OPT: -w
+    volumes:
+      - /home/bedvil/server:/hostfs:ro
+      - /sys:/sys:ro
+      - /etc/os-release:/etc/os-release:ro
+    networks:
+      - metrics_api
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  docker_api:
+    internal: true
+  metrics_api:
+    internal: true

@@ -1,0 +1,133 @@
+[
+  {
+    "id": "vscode",
+    "name": "Visual Studio Code",
+    "category": "ide",
+    "mode": "app",
+    "appIds": ["Microsoft.VisualStudioCode"],
+    "commands": ["code"],
+    "fallbackUrl": "https://code.visualstudio.com/download",
+    "expectedInstalled": true
+  },
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "category": "ide",
+    "mode": "app",
+    "appIds": ["Anysphere.Cursor"],
+    "commands": ["cursor"],
+    "fallbackUrl": "https://cursor.com/downloads",
+    "expectedInstalled": true
+  },
+  {
+    "id": "antigravity",
+    "name": "Antigravity",
+    "category": "ide",
+    "mode": "app",
+    "appIds": ["com.google.antigravity"],
+    "commands": ["antigravity"],
+    "fallbackUrl": "https://antigravity.google.com/",
+    "expectedInstalled": true
+  },
+  {
+    "id": "zed",
+    "name": "Zed",
+    "category": "ide",
+    "mode": "app",
+    "appIds": [],
+    "commands": ["zed"],
+    "fallbackUrl": "https://zed.dev/download",
+    "expectedInstalled": false
+  },
+  {
+    "id": "visual-studio",
+    "name": "Visual Studio Community",
+    "category": "ide",
+    "mode": "app",
+    "appIds": [],
+    "commands": ["devenv"],
+    "fallbackUrl": "https://visualstudio.microsoft.com/vs/community/",
+    "expectedInstalled": false
+  },
+  {
+    "id": "jetbrains",
+    "name": "JetBrains IDEs",
+    "category": "ide",
+    "mode": "app",
+    "appIds": [],
+    "commands": ["jetbrains-toolbox"],
+    "fallbackUrl": "https://www.jetbrains.com/toolbox-app/",
+    "expectedInstalled": false
+  },
+  {
+    "id": "hermes",
+    "name": "Hermes Desktop",
+    "category": "agent",
+    "mode": "app",
+    "appIds": ["com.nousresearch.hermes"],
+    "commands": ["hermes"],
+    "fallbackUrl": "https://github.com/NousResearch/hermes-agent",
+    "expectedInstalled": true
+  },
+  {
+    "id": "codex",
+    "name": "Codex CLI",
+    "category": "cli",
+    "mode": "cli",
+    "appIds": [],
+    "commands": ["codex"],
+    "fallbackUrl": "https://learn.chatgpt.com/docs/codex/cli",
+    "expectedInstalled": false
+  },
+  {
+    "id": "opencode",
+    "name": "OpenCode",
+    "category": "cli",
+    "mode": "warp-tab",
+    "appIds": [],
+    "commands": ["opencode.cmd", "opencode"],
+    "tabConfig": "homepage_opencode",
+    "fallbackUrl": "https://opencode.ai/docs/",
+    "expectedInstalled": true
+  },
+  {
+    "id": "aider",
+    "name": "Aider",
+    "category": "cli",
+    "mode": "cli",
+    "appIds": [],
+    "commands": ["aider"],
+    "fallbackUrl": "https://aider.chat/docs/install.html",
+    "expectedInstalled": false
+  },
+  {
+    "id": "warp",
+    "name": "Warp",
+    "category": "terminal",
+    "mode": "app",
+    "appIds": ["dev.warp.Warp"],
+    "commands": ["warp"],
+    "fallbackUrl": "https://www.warp.dev/",
+    "expectedInstalled": true
+  },
+  {
+    "id": "powershell",
+    "name": "PowerShell",
+    "category": "shell",
+    "mode": "app",
+    "appIds": ["{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe"],
+    "commands": ["pwsh", "powershell"],
+    "fallbackUrl": "https://learn.microsoft.com/powershell/",
+    "expectedInstalled": true
+  },
+  {
+    "id": "wsl",
+    "name": "WSL",
+    "category": "shell",
+    "mode": "cli",
+    "appIds": [],
+    "commands": ["wsl"],
+    "fallbackUrl": "https://learn.microsoft.com/windows/wsl/install",
+    "expectedInstalled": false
+  }
+]
