@@ -87,6 +87,8 @@ rg -q '^background:$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
     fail "No está configurado el fondo de tormenta AB"
 rg -q '^  image: /images/storm-ab-background\.png$' "${HOMEPAGE_CONFIG_DIR}/settings.yaml" || \
     fail "El fondo de tormenta AB no usa el recurso local versionado"
+rg -q 'test -s /app/public/images/storm-ab-background\.png' "${HOMEPAGE_PROJECT_DIR}/compose.yaml" || \
+    fail "El healthcheck no protege el recurso visual de tormenta AB"
 rg -q -F 'nth-child(-n + 8)' "${HOMEPAGE_CONFIG_DIR}/custom.css" || \
     fail "HOME SERVER no fija una altura prioritaria para sus tarjetas"
 rg -q 'height: 5rem !important' "${HOMEPAGE_CONFIG_DIR}/custom.css" || \

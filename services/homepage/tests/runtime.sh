@@ -29,6 +29,15 @@ health_code="$(curl --fail --silent --show-error --retry 15 --retry-all-errors \
     http://127.0.0.1:3000/api/healthcheck)"
 [[ "${health_code}" == "200" ]] || fail "Healthcheck local devolvió ${health_code}"
 
+docker exec homepage test -s /app/public/images/storm-ab-background.png || \
+    fail "El recurso visual de tormenta AB no existe dentro de Homepage"
+background_code="$(curl --silent --show-error --max-time 5 --output /dev/null \
+    --write-out '%{http_code}' \
+    --header 'Host: macmini-server.tailf553c4.ts.net:10000' \
+    http://127.0.0.1:3000/images/storm-ab-background.png)"
+[[ "${background_code}" == "200" ]] || \
+    fail "El recurso visual de tormenta AB devolvió HTTP ${background_code}"
+
 homepage_code="$(curl --silent --show-error --max-time 5 --output /dev/null \
     --write-out '%{http_code}' \
     --header 'Host: macmini-server.tailf553c4.ts.net:10000' \

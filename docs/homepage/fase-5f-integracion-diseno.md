@@ -157,3 +157,21 @@ Glances. La copia previa está en
 `services/homepage/backups/20260830-fase-5f-restore-equipment-status-dots/`; las
 validaciones estáticas y de métricas pasaron con Homepage healthy. Falta solo confirmar
 que visualmente los tres puntos no se solapan con el texto.
+
+## Duodécima iteración — persistencia del fondo AB
+
+El 31 de agosto se detectó que la imagen aprobada no se mostraba al abrir Homepage. La
+configuración `background.image` y el activo versionado seguían intactos en el host, pero
+el montaje de solo lectura activo dentro del contenedor estaba vacío: la URL del recurso
+devolvía HTTP 400. No fue una pérdida del diseño ni un problema de caché.
+
+Se guardó el estado previo en
+`services/homepage/backups/20260831-fase-5f-background-mount-repair/` y se recreó
+exclusivamente el contenedor Homepage para renovar ese montaje. Tras ello, el archivo
+`storm-ab-background.png` volvió a estar presente dentro del contenedor y se sirve con
+HTTP 200 (1 732 895 bytes). Homepage quedó `running/healthy`, sin reinicios.
+
+Para evitar una repetición silenciosa, el `healthcheck` de Homepage ahora exige tanto el
+recurso visual no vacío como su healthcheck habitual; además, el test de runtime falla si
+el archivo falta o si su URL no devuelve HTTP 200. Las validaciones estáticas y de runtime
+pasaron tras la corrección.

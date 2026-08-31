@@ -215,3 +215,11 @@ con acceso apropiado.
   pasaron; Homepage continúa healthy. Falta confirmar la visualización sin solapamientos
   antes del cierre definitivo de 5F. La copia previa está en
   `services/homepage/backups/20260830-fase-5f-restore-equipment-status-dots/`.
+- El 31 de agosto se detectó que el fondo de tormenta AB no se mostraba. El activo local
+  y su configuración seguían correctos, pero el montaje de imágenes del contenedor
+  Homepage estaba vacío y la ruta del recurso devolvía HTTP 400. Se guardó una copia
+  recuperable en `services/homepage/backups/20260831-fase-5f-background-mount-repair/`
+  y se recreó exclusivamente Homepage. El PNG volvió a estar montado y se verificó HTTP
+  200 (1 732 895 bytes), con Homepage `running/healthy` y cero reinicios. Su healthcheck
+  y el test runtime ahora comprueban explícitamente que dicho recurso existe y se sirve;
+  así un montaje vacío se marcará como fallo visible en lugar de ocultar el fondo.
